@@ -15,10 +15,6 @@ import java.io.IOException;
  * @author ChatGPT
  */
 
-/*
- * Test git push Comment :PPP
- */
-
 public class App extends JFrame {
 
     private BufferedImage canvas;
@@ -76,6 +72,7 @@ public class App extends JFrame {
      * Initializes drawing settings for the canvas.
      */
     private void initDrawing() {
+    	System.out.println("Initated Drawing...");
         Graphics2D g2d = canvas.createGraphics();
         g2d.setColor(Color.BLACK);
         g2d.setStroke(new BasicStroke(2));
