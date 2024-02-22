@@ -30,7 +30,14 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver {
             public void mousePressed(MouseEvent e) {
                 lastPoint = e.getPoint();
                 if (currentElement instanceof Wall) {
-                    currentElement.setStartPoint(lastPoint);
+                    //currentElement.setStartPoint(lastPoint);
+                    Wall newWall = new Wall(Color.BLACK, 3);
+                    newWall.setStartPoint(lastPoint);
+                    currentElement = newWall;
+                }
+                if (currentElement instanceof Door) {
+                	drawElement(lastPoint, e.getPoint());
+                	repaint();
                 }
             }
 
@@ -38,6 +45,7 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver {
             public void mouseReleased(MouseEvent e) {
                 if (currentElement instanceof Wall) {
                     currentElement.setEndPoint(e.getPoint());
+                    drawElement(lastPoint, e.getPoint());
                     repaint();
                 }
             }
@@ -47,7 +55,8 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver {
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-            	if (currentElement != null) {
+            	//if (currentElement != null) {
+            	if (currentElement instanceof FreeWall) {
                     drawElement(lastPoint, e.getPoint());
                     lastPoint = e.getPoint();
                     repaint();

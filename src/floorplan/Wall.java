@@ -31,7 +31,7 @@ public class Wall implements DesignElement{
     
     public void setStartPoint(Point startPoint) {
         this.startPoint = startPoint;
-        this.endPoint = startPoint; // Reset end point to start point initially
+        //this.endPoint = startPoint; // Reset end point to start point initially
     }
    
     public void setEndPoint(Point endPoint) {
