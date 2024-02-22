@@ -34,8 +34,7 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver {
                     Wall newWall = new Wall(Color.BLACK, 3);
                     newWall.setStartPoint(lastPoint);
                     currentElement = newWall;
-                }
-                if (currentElement instanceof Door) {
+                }else if (currentElement instanceof Door || currentElement instanceof Window || currentElement instanceof Furniture) {
                 	drawElement(lastPoint, e.getPoint());
                 	repaint();
                 }
@@ -76,6 +75,17 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        // Draw the grid lines
+        int gridSize = 20; // Adjust this value to change the grid size
+        g.setColor(Color.LIGHT_GRAY);
+        for (int x = 0; x < getWidth(); x += gridSize) {
+            g.drawLine(x, 0, x, getHeight());
+        }
+        for (int y = 0; y < getHeight(); y += gridSize) {
+            g.drawLine(0, y, getWidth(), y);
+        }
+
+        // Draw the canvas image
         g.drawImage(canvas, 0, 0, null);
     }
     

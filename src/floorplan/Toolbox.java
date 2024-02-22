@@ -15,10 +15,12 @@ public class Toolbox extends JPanel {
     private List<ElementSelectedObserver> observers = new ArrayList<>();
 
     public Toolbox() {
-        setLayout(new GridLayout(4, 1));
+        setLayout(new GridLayout(5, 1));
         addElement(new FreeWall());
         addElement(new Wall(Color.BLACK, 3));
         addElement(new Door());
+        addElement(new Window());
+        addElement(new Furniture());
         //addElement(new FreeWall(Color.BLACK, 3));
         //addElement(new Wall(Color.BLACK, 3));
         //addElement(new Door(Color.RED, 10));
