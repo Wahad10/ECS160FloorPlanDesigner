@@ -2,6 +2,11 @@ package floorplan;
 
 import java.awt.*;
 
+/**
+ * Class representing a window design element.
+ *
+ * @author ChatGPT
+ */
 public class Window implements DesignElement {
 
     private static final int WINDOW_WIDTH = 40;

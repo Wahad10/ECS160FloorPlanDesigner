@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
+ * Class for sidebar
  * @author Wahad Latif and ChatGPT
  *
  */

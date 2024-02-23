@@ -25,10 +25,7 @@ public class Door implements DesignElement {
         int centerX = x + DOOR_SIZE / 2;
         int centerY = y + DOOR_SIZE / 2;
 
-        // Draw a line from one of the arc's endpoints to the circle center
-        //g.drawLine(centerX, centerY, x + DOOR_SIZE, y + DOOR_SIZE);
-        
-     // Calculate the endpoint of the line to meet the quarter circle
+        // Calculate the endpoint of the line to meet the quarter circle
         int endX = (int) (centerX + DOOR_SIZE / 2 * Math.cos(Math.toRadians(270)));
         int endY = (int) (centerY + DOOR_SIZE / 2 * Math.sin(Math.toRadians(270)));
 

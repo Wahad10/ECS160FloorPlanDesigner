@@ -3,7 +3,7 @@ package floorplan;
 import java.awt.*;
 
 /**
- * Abstract class representing a design element.
+ * Abstract interface representing a design element.
  *
  * @author ChatGPT
  */

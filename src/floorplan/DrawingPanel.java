@@ -75,6 +75,7 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        
         // Draw the grid lines
         int gridSize = 20; // Adjust this value to change the grid size
         g.setColor(Color.LIGHT_GRAY);

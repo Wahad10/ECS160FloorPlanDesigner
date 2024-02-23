@@ -26,7 +26,7 @@ public class App extends JFrame {
     private void initUI() {
         setLayout(new BorderLayout());
 
-        // Create and add the toolbox to the north
+        // Create and add the toolbox to the east
         toolbox = new Toolbox();
         add(toolbox, BorderLayout.EAST);
 

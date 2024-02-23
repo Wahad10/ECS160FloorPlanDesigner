@@ -4,6 +4,11 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
+/**
+ * Class representing a furniture design element.
+ *
+ * @author Wahad Latif
+ */
 public class Furniture implements DesignElement {
 
     private static final int FURNITURE_WIDTH = 40;
