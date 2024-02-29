@@ -4,8 +4,8 @@ import java.awt.*;
 import javax.swing.*;
 
 /**
- * Simple Paint Application using Java Swing.
- * Allows users to draw, save, load, and clear drawings.
+ * Simple Floor Plan Designer using Java Swing.
+ * Allows users to draw, save, load, and clear floor plans.
  *
  * @author ChatGPT
  */
@@ -15,7 +15,7 @@ public class App extends JFrame {
     private Toolbox toolbox;
 
     public App() {
-        super("Simple Paint Application");
+        super("Simple Floor Plan Designer");
         initUI();
     }
     

@@ -22,7 +22,6 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver {
     public DrawingPanel(int width, int height) {
         canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         clearCanvas();
-        
         setPreferredSize(new Dimension(width, height));
 
         addMouseListener(new MouseAdapter() {
