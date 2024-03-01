@@ -13,6 +13,7 @@ public class App extends JFrame {
 
     private DrawingPanel drawingPanel;
     private Toolbox toolbox;
+    private FunctionBox functionbox;
 
     public App() {
         super("Simple Floor Plan Designer");
@@ -33,6 +34,10 @@ public class App extends JFrame {
         // Create and add the drawing panel to the center
         drawingPanel = new DrawingPanel(800, 600);
         add(drawingPanel, BorderLayout.CENTER);
+
+        // Create and add the functionbox to the north
+        functionbox = new FunctionBox(drawingPanel);
+        add(functionbox, BorderLayout.NORTH);
         
         toolbox.addObserver(drawingPanel);
 

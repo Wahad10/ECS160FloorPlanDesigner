@@ -1,6 +1,6 @@
 package floorplan;
 
-import components.*;
+import elements.*;
 
 /*
  * @author Wahad Latif

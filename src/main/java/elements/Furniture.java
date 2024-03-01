@@ -1,8 +1,6 @@
-package components;
+package elements;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Point;
+import java.awt.*;
 
 /**
  * Class representing a furniture design element.
@@ -24,6 +22,11 @@ public class Furniture implements DesignElement {
     }
     
     public void setEndPoint(Point end) {
+    }
+
+    @Override
+    public Rectangle getBounds() {
+        return new Rectangle(0, 0, 0, 0);
     }
 }
 

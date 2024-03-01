@@ -2,8 +2,8 @@ package floorplan;
 
 import javax.swing.*;
 
-import components.*;
-import components.Window;
+import elements.*;
+import elements.Window;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -34,7 +34,33 @@ public class Toolbox extends JPanel {
 
     private void addElement(DesignElement element) {
         JButton button = new JButton(element.getClass().getSimpleName());
-        button.addActionListener(e -> notifyObservers(element));
+        //button.addActionListener(e -> notifyObservers(element));
+        button.addActionListener(e -> {
+            if (element instanceof Furniture) {
+                JPopupMenu menu = new JPopupMenu();
+                JMenuItem chairItem = new JMenuItem("Bed");
+                chairItem.addActionListener(ev -> {
+                    notifyObservers(new Bed());
+                });
+                JMenuItem tableItem = new JMenuItem("Table");
+                tableItem.addActionListener(ev -> {
+                    notifyObservers(new Table());
+                });
+                // Add more furniture items as needed
+    
+                menu.add(chairItem);
+                menu.add(tableItem);
+                // Add more furniture items to the menu
+
+                //int x = button.getLocationOnScreen().x - button.getWidth();
+                //int y = button.getLocationOnScreen().y + button.getHeight();
+                //menu.show(button, 0, y);
+    
+                menu.show(button, 0, 0);//button.getHeight());
+            } else {
+                notifyObservers(element);
+            }
+        });
         add(button);
     }
 

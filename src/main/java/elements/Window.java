@@ -1,4 +1,4 @@
-package components;
+package elements;
 
 import java.awt.*;
 
@@ -22,6 +22,11 @@ public class Window implements DesignElement {
     }
     
     public void setEndPoint(Point end) {
+    }
+
+    @Override
+    public Rectangle getBounds() {
+        return new Rectangle(0, 0, 0, 0);
     }
 }
 

@@ -1,4 +1,4 @@
-package components;
+package elements;
 
 import java.awt.*;
 
@@ -46,5 +46,14 @@ public class Wall implements DesignElement{
         } else {
             return new Point(start.x, end.y);
         }
+    }
+
+    @Override
+    public Rectangle getBounds() {
+        int x = Math.min(startPoint.x, endPoint.x);
+        int y = Math.min(startPoint.y, endPoint.y);
+        int width = Math.abs(startPoint.x - endPoint.x);
+        int height = Math.abs(startPoint.y - endPoint.y);
+        return new Rectangle(x, y, width, height);
     }
 }

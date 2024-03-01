@@ -1,10 +1,13 @@
 package floorplan;
 
+import java.util.*;
+import java.util.List;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
-import components.*;
-import components.Window;
+import elements.*;
+import elements.Window;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -12,34 +15,46 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import functions.*;
+
 /**
  * Panel for drawing on a canvas.
  *
  * @author ChatGPT
  */
-public class DrawingPanel extends JPanel implements ElementSelectedObserver {
+public class DrawingPanel extends JPanel implements ElementSelectedObserver, FunctionSelectedObserver {
 
     private BufferedImage canvas;
     private Point lastPoint;
+    private List<DesignElement> designElements;
     private DesignElement currentElement;
+    private ManipulationFunction currentFunction;
 
     public DrawingPanel(int width, int height) {
         canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         clearCanvas();
         setPreferredSize(new Dimension(width, height));
 
+        designElements = new ArrayList<>();
+
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
+                if(currentFunction instanceof Select){
+                    
+                    return;
+                }
                 lastPoint = e.getPoint();
+
                 if (currentElement instanceof Wall) {
-                    //currentElement.setStartPoint(lastPoint);
                     Wall newWall = new Wall(Color.BLACK, 3);
                     newWall.setStartPoint(lastPoint);
                     currentElement = newWall;
-                }else if (currentElement instanceof Door || currentElement instanceof Window || currentElement instanceof Furniture) {
+                    designElements.add(currentElement);
+                }else if (currentElement instanceof Door || currentElement instanceof Window || currentElement instanceof Furniture || currentElement instanceof Table || currentElement instanceof Bed) {
                 	drawElement(lastPoint, e.getPoint());
                 	repaint();
+                    designElements.add(currentElement);
                 }
             }
 
@@ -78,21 +93,12 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        
-        // Draw the grid lines
-        int gridSize = 20; // Adjust this value to change the grid size
-        g.setColor(Color.LIGHT_GRAY);
-        for (int x = 0; x < getWidth(); x += gridSize) {
-            g.drawLine(x, 0, x, getHeight());
-        }
-        for (int y = 0; y < getHeight(); y += gridSize) {
-            g.drawLine(0, y, getWidth(), y);
-        }
-
+        //draw the grid
+        drawGrid(g);
         // Draw the canvas image
         g.drawImage(canvas, 0, 0, null);
     }
-    
+
     private void drawElement(Point start, Point end) {
         Graphics2D g2d = canvas.createGraphics();
         currentElement.draw(g2d, start, end);
@@ -102,6 +108,27 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver {
     @Override
     public void onElementSelected(DesignElement element) {
         currentElement = element;
+    }
+
+    public List<DesignElement> getDesignElements(){
+        return designElements;
+    }
+
+    @Override
+    public void onFunctionSelected(ManipulationFunction function) {
+        currentFunction = function;
+    }
+
+    private void drawGrid(Graphics g) {
+        // Draw the grid lines
+        int gridSize = 20; // Adjust this value to change the grid size
+        g.setColor(Color.LIGHT_GRAY);
+        for (int x = 0; x < getWidth(); x += gridSize) {
+            g.drawLine(x, 0, x, getHeight());
+        }
+        for (int y = 0; y < getHeight(); y += gridSize) {
+            g.drawLine(0, y, getWidth(), y);
+        }
     }
 
     private void resizeCanvas(int width, int height) {
