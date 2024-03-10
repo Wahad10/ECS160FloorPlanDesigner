@@ -13,15 +13,9 @@ public class Table implements DesignElement {
     private static final int TABLE_HEIGHT = 40;
 
     @Override
-    public void draw(Graphics2D g, Point start, Point end) {
+    public void draw(Graphics2D g, Point start) {
         g.setColor(Color.YELLOW);
         g.fillRect(start.x - TABLE_WIDTH / 2, start.y - TABLE_HEIGHT / 2, TABLE_WIDTH, TABLE_HEIGHT);
-    }
-    
-    public void setStartPoint(Point start) {
-    }
-    
-    public void setEndPoint(Point end) {
     }
 
     @Override

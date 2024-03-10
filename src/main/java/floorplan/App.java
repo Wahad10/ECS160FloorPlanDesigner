@@ -27,19 +27,19 @@ public class App extends JFrame {
     private void initUI() {
         setLayout(new BorderLayout());
 
-        // Create and add the toolbox to the east
-        toolbox = new Toolbox();
-        add(toolbox, BorderLayout.EAST);
-
         // Create and add the drawing panel to the center
         drawingPanel = new DrawingPanel(800, 600);
         add(drawingPanel, BorderLayout.CENTER);
 
+        // Create and add the toolbox to the east
+        toolbox = new Toolbox();
+        add(toolbox, BorderLayout.EAST);
+        toolbox.addObserver(drawingPanel);
+
         // Create and add the functionbox to the north
         functionbox = new FunctionBox(drawingPanel);
         add(functionbox, BorderLayout.NORTH);
-        
-        toolbox.addObserver(drawingPanel);
+        functionbox.addObserver(drawingPanel);
 
         setupMenuBar();
 

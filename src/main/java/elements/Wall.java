@@ -20,7 +20,7 @@ public class Wall implements DesignElement{
     }
     
     @Override
-    public void draw(Graphics2D g, Point start, Point end) {
+    public void draw(Graphics2D g, Point start) {
         if (startPoint != null && endPoint != null) {
             Point adjustedEnd = calculateAdjustedEnd(startPoint, endPoint);
             g.setColor(color);
@@ -37,6 +37,10 @@ public class Wall implements DesignElement{
     public void setEndPoint(Point endPoint) {
         this.endPoint = endPoint;
     }
+
+    /**public void setTempEndPoint(Point endPoint) {
+        this.endPoint = endPoint;
+    }**/
 
     private Point calculateAdjustedEnd(Point start, Point end) {
         int dx = Math.abs(end.x - start.x);

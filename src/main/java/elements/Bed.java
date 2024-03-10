@@ -13,15 +13,9 @@ public class Bed implements DesignElement {
     private static final int BED_HEIGHT = 80;
 
     @Override
-    public void draw(Graphics2D g, Point start, Point end) {
+    public void draw(Graphics2D g, Point start) {
         g.setColor(Color.RED);
         g.fillRect(start.x - BED_WIDTH / 2, start.y - BED_HEIGHT / 2, BED_WIDTH, BED_HEIGHT);
-    }
-    
-    public void setStartPoint(Point start) {
-    }
-    
-    public void setEndPoint(Point end) {
     }
 
     @Override

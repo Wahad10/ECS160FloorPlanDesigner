@@ -41,18 +41,20 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
             @Override
             public void mousePressed(MouseEvent e) {
                 if(currentFunction instanceof Select){
-                    
+                    //DO SELECT STUFF HERE
                     return;
                 }
-                lastPoint = e.getPoint();
 
+                lastPoint = e.getPoint();
+                //Wall will only be drawn once mouse is releases later
                 if (currentElement instanceof Wall) {
                     Wall newWall = new Wall(Color.BLACK, 3);
                     newWall.setStartPoint(lastPoint);
                     currentElement = newWall;
                     designElements.add(currentElement);
-                }else if (currentElement instanceof Door || currentElement instanceof Window || currentElement instanceof Furniture || currentElement instanceof Table || currentElement instanceof Bed) {
-                	drawElement(lastPoint, e.getPoint());
+                //if currentElement anything other than wall, just draw it where mouse is clicked
+                }else if (currentElement != null) {
+                	drawElement(lastPoint);
                 	repaint();
                     designElements.add(currentElement);
                 }
@@ -61,20 +63,21 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
             @Override
             public void mouseReleased(MouseEvent e) {
                 if (currentElement instanceof Wall) {
-                    currentElement.setEndPoint(e.getPoint());
-                    drawElement(lastPoint, e.getPoint());
+                    ((Wall)currentElement).setEndPoint(e.getPoint());
+                    drawElement(lastPoint);
                     repaint();
                 }
             }
 
         });
-
+        
+        //dont really need this, was trying ot show wall being drawn as mouse is dragged
         addMouseMotionListener(new MouseMotionAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
-            	//if (currentElement != null) {
-            	if (currentElement instanceof FreeWall) {
-                    drawElement(lastPoint, e.getPoint());
+                if (currentElement instanceof Wall) {
+                    //((Wall)currentElement).setEndPoint(e.getPoint());
+                    //drawElement(lastPoint);
                     lastPoint = e.getPoint();
                     repaint();
                 }
@@ -99,9 +102,9 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
         g.drawImage(canvas, 0, 0, null);
     }
 
-    private void drawElement(Point start, Point end) {
+    private void drawElement(Point start) {
         Graphics2D g2d = canvas.createGraphics();
-        currentElement.draw(g2d, start, end);
+        currentElement.draw(g2d, start);
         g2d.dispose();
     }
 

@@ -23,14 +23,7 @@ public class FunctionBox extends JPanel {
 
         setLayout(new GridLayout(1, 4));
         addFunction(new Select(drawingPanel));
-        //addElement(new Wall(Color.BLACK, 3));
-        //addElement(new Door());
-        //addElement(new Window());
-        //addElement(new Furniture());
-        //addElement(new FreeWall(Color.BLACK, 3));
-        //addElement(new Wall(Color.BLACK, 3));
-        //addElement(new Door(Color.RED, 10));
-        // Add other design elements as needed
+        //Add other functions, MOVE, REMOVE, ROTATE, RESIZE
     }
 
     private void addFunction(ManipulationFunction function) {

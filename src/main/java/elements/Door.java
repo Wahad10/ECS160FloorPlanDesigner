@@ -11,7 +11,7 @@ public class Door implements DesignElement {
     }**/
 
     @Override
-    public void draw(Graphics2D g, Point start, Point end) {
+    public void draw(Graphics2D g, Point start) {
         g.setColor(Color.RED);
         g.setStroke(new BasicStroke(2));
 
@@ -32,12 +32,6 @@ public class Door implements DesignElement {
         // Draw a line from the center of the circle to the arc
         g.drawLine(centerX, centerY, endX, endY);
 
-    }
-    
-    public void setStartPoint(Point start) {
-    }
-    
-    public void setEndPoint(Point end) {
     }
 
     @Override

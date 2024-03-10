@@ -25,7 +25,7 @@ hs_err_pid*
 # Mac thing
 .DS_Store
 
-# Eclipse Stuff, not yet, after partner pulls once
-#.settings/
-#.project
-#.classpath
+# Eclipse Stuff
+.settings/
+.project
+.classpath
