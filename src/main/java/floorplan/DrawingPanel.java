@@ -43,7 +43,8 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
             public void mouseClicked(MouseEvent e) {
                 lastPoint = e.getPoint();
             	System.out.print(designElements.size());
-                if (currentFunction instanceof Select || currentFunction instanceof Move && SwingUtilities.isLeftMouseButton(e)) {
+                //select and any other functions too (polymorphism)
+                if (currentFunction != null && SwingUtilities.isLeftMouseButton(e)) {
                     currentFunction.performFunction(lastPoint);
                 }
             }
@@ -136,6 +137,12 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
     public void onFunctionSelected(ManipulationFunction function) {
         currentElement = null;
         currentFunction = function;
+
+        //perform remove immediately on click
+        if(currentFunction instanceof Remove){
+            currentFunction.performFunction(lastPoint);
+            currentFunction = null;
+        }
     }
 
     private void drawGrid(Graphics g) {

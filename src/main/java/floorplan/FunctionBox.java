@@ -21,12 +21,13 @@ public class FunctionBox extends JPanel {
     public FunctionBox(DrawingPanel drawingPanel) {
         //this.drawingPanel = drawingPanel;
 
-        setLayout(new GridLayout(1, 4));
+        setLayout(new GridLayout(1, 5));
         Select selectFunction = new Select(drawingPanel);
         addFunction(selectFunction);
         addFunction(new Move(drawingPanel, selectFunction));
-        //addFunction(new Rotate(drawingPanel));
-        //addFunction(new Resize(drawingPanel));
+        addFunction(new Remove(drawingPanel, selectFunction));
+        addFunction(new Rotate(drawingPanel, selectFunction));
+        addFunction(new Resize(drawingPanel, selectFunction));
         //Add other functions, MOVE, REMOVE, ROTATE, RESIZE
     }
 

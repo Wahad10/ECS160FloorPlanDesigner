@@ -4,11 +4,11 @@ import java.awt.*;
 
 import floorplan.*;
 
-public class Move implements ManipulationFunction {
+public class Resize implements ManipulationFunction {
     private DrawingPanel drawingPanel;
     private Select selectFunction;
 
-    public Move(DrawingPanel drawingPanel, Select selectFunction) {
+    public Resize(DrawingPanel drawingPanel, Select selectFunction) {
         this.drawingPanel = drawingPanel;
         this.selectFunction = selectFunction;
     }
