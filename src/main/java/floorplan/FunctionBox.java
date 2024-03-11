@@ -15,15 +15,16 @@ import java.util.List;
  */
 
 public class FunctionBox extends JPanel {
-    private DrawingPanel drawingPanel;
+    //private DrawingPanel drawingPanel;
     private List<FunctionSelectedObserver> observers = new ArrayList<>();
 
     public FunctionBox(DrawingPanel drawingPanel) {
-        this.drawingPanel = drawingPanel;
+        //this.drawingPanel = drawingPanel;
 
         setLayout(new GridLayout(1, 4));
-        addFunction(new Select(drawingPanel));
-        //addFunction(new Move(drawingPanel));
+        Select selectFunction = new Select(drawingPanel);
+        addFunction(selectFunction);
+        addFunction(new Move(drawingPanel, selectFunction));
         //addFunction(new Rotate(drawingPanel));
         //addFunction(new Resize(drawingPanel));
         //Add other functions, MOVE, REMOVE, ROTATE, RESIZE

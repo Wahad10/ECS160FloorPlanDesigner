@@ -42,10 +42,15 @@ public class Toolbox extends JPanel {
                 tableItem.addActionListener(ev -> {
                     notifyObservers(new Table());
                 });
+                JMenuItem plantItem = new JMenuItem("Plant");
+                plantItem.addActionListener(ev -> {
+                    notifyObservers(new Plant());
+                });
                 // Add more furniture items as needed
     
                 menu.add(chairItem);
                 menu.add(tableItem);
+                menu.add(plantItem);
                 // Add more furniture items to the menu
 
                 //int x = button.getLocationOnScreen().x - button.getWidth();

@@ -8,5 +8,5 @@ import java.awt.*;
  * @author Wahad Latif
  */
 public interface ManipulationFunction {
-    public void performFunction(Point startPoint, Point endPoint);
+    public void performFunction(Point clickedPoint);
 }

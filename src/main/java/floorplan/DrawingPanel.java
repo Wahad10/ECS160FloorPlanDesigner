@@ -7,7 +7,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import elements.*;
-import elements.Window;
+//import elements.Window;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -41,41 +41,17 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                lastPoint = e.getPoint();
             	System.out.print(designElements.size());
-                if (currentFunction instanceof Select && SwingUtilities.isLeftMouseButton(e)) {
-                    DesignElement clickedElement = getClickedElement(e.getPoint());
-                    if (clickedElement != null) {
-                        clickedElement.setSelected(true);
-                        repaint();
-                    	lastPoint = e.getPoint();
-                        System.out.println("Clicked element class: " + clickedElement.getClass().getSimpleName());
-                        if (clickedElement instanceof Door) {
-                            Door clickedDoor = (Door) clickedElement;
-                            System.out.println("Clicked on a door. Is selected: " + clickedDoor.isSelected());
-                            //clickedElement.setSelected(true);
-                            //drawElement(lastPoint);
-                            repaint();
-                        } else {
-                            System.out.println("Clicked element is not a Door.");
-                        }
-                    } else {
-                        System.out.println("No element found at the clicked point.");
-                    }
+                if (currentFunction instanceof Select || currentFunction instanceof Move && SwingUtilities.isLeftMouseButton(e)) {
+                    currentFunction.performFunction(lastPoint);
                 }
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-                // Check if the left mouse button was pressed
-                if (e.getButton() != MouseEvent.BUTTON1) {
-                    return; // Return if it wasn't the left mouse button
-                }
-
-                if(currentFunction instanceof Select){
-                    //DO SELECT STUFF HERE
-                    //currentFunction = null;
-                    return;
-                }
+                // Return if it wasn't the left mouse button
+                if (e.getButton() != MouseEvent.BUTTON1) {return;}
 
                 lastPoint = e.getPoint();
                 //Wall will only be drawn once mouse is released later
@@ -95,9 +71,7 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
                     currentElement.setStartPoint(lastPoint);
                     designElements.add(currentElement);
 
-                	//drawElement(lastPoint);
                 	repaint();
-                    //designElements.add(currentElement);
                 }
             }
 
@@ -114,19 +88,6 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
             }
 
         });
-        
-        //dont really need this, was trying ot show wall being drawn as mouse is dragged
-        /**addMouseMotionListener(new MouseMotionAdapter() {
-            @Override
-            public void mouseDragged(MouseEvent e) {
-                if (currentElement instanceof Wall) {
-                    //((Wall)currentElement).setEndPoint(e.getPoint());
-                    //drawElement(lastPoint);
-                    lastPoint = e.getPoint();
-                    repaint();
-                }
-            }
-        });**/
 
         // Add component listener to handle resizing
         addComponentListener(new ComponentAdapter() {
@@ -140,6 +101,8 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        //erase everything
+        eraseCanvas();
         //draw the grid
         drawGrid(g);
         //draw elements onto canvas
@@ -196,17 +159,19 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
         repaint();
     }
 
-    public void clearCanvas() {
+    public void eraseCanvas() {
         Graphics2D g2d = canvas.createGraphics();
         g2d.setComposite(AlphaComposite.Clear);
         g2d.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         g2d.setComposite(AlphaComposite.SrcOver);
         g2d.dispose();
+    }
 
+    public void clearCanvas() {
+        eraseCanvas();
         if(designElements != null){
             designElements.clear();
         }
-
         repaint();
     }
 
@@ -235,18 +200,5 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
                 ex.printStackTrace();
             }
         }
-    }
-
-    private DesignElement getClickedElement(Point point) {
-        List<DesignElement> elements = getDesignElements();
-        for (DesignElement element : elements) {
-            Rectangle bounds = element.getBounds();
-            if (bounds.contains(point)) {
-                System.out.println("Found element of class: " + element.getClass().getSimpleName());
-                return element;
-            }
-        }
-        System.out.println("No element found at the specified point.");
-        return null;
     }
 }

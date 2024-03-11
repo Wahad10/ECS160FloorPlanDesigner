@@ -29,10 +29,6 @@ public class Wall implements DesignElement{
         this.endPoint = endPoint;
     }
 
-    /**public void setTempEndPoint(Point endPoint) {
-        this.endPoint = endPoint;
-    }**/
-
     private Point calculateAdjustedEnd(Point start, Point end) {
         int dx = Math.abs(end.x - start.x);
         int dy = Math.abs(end.y - start.y);
@@ -80,23 +76,9 @@ public class Wall implements DesignElement{
         int width = maxX - minX;
         int height = maxY - minY;
 
-        System.out.println("Wall Bounds:" + minX + "," + minY + "," + width + "," + height);
+        //System.out.println("Wall Bounds:" + minX + "," + minY + "," + width + "," + height);
     
         return new Rectangle(minX, minY, width, height);
-
-
-        /**Point adjustedEnd = calculateAdjustedEnd(startPoint, endPoint);
-        int x = Math.min(startPoint.x, adjustedEnd.x);
-        int y = Math.min(startPoint.y, adjustedEnd.y);
-        int width = Math.abs(startPoint.x - adjustedEnd.x);
-        int height = Math.abs(startPoint.y - adjustedEnd.y);
-        if(width == 0){
-            width = 3;
-        }else if(height == 0){
-            height = 3;
-        }
-        System.out.println("Wall Bounds:" + x + "," + y + "," + width + "," + height);
-        return new Rectangle(x, y, width, height);**/
     }
 
     @Override
