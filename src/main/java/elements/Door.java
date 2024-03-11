@@ -5,18 +5,28 @@ import java.awt.*;
 public class Door implements DesignElement {
 
     private static final int DOOR_SIZE = 80; // Diameter of the door
+    private Point startPoint;
+    private boolean isSelected = false;
 
     /**public Door(Color color, int thickness) {
         super(color, thickness);
     }**/
 
+    public void setStartPoint(Point startPoint) {
+        this.startPoint = startPoint;
+    }
+
     @Override
-    public void draw(Graphics2D g, Point start) {
-        g.setColor(Color.RED);
+    public void draw(Graphics2D g) {
+        if (isSelected) {
+            g.setColor(Color.MAGENTA);
+        } else {
+            g.setColor(Color.RED);
+        }
         g.setStroke(new BasicStroke(2));
 
-        int x = start.x - DOOR_SIZE / 2;
-        int y = start.y - DOOR_SIZE / 2;
+        int x = startPoint.x - DOOR_SIZE / 2;
+        int y = startPoint.y - DOOR_SIZE / 2;
 
         // Draw the quarter circle
         g.drawArc(x, y, DOOR_SIZE, DOOR_SIZE, 90, 90);
@@ -36,6 +46,18 @@ public class Door implements DesignElement {
 
     @Override
     public Rectangle getBounds() {
-        return new Rectangle(0, 0, 0, 0);
+        int x = startPoint.x - DOOR_SIZE / 2;
+        int y = startPoint.y - DOOR_SIZE / 2;
+        return new Rectangle(x, y, DOOR_SIZE / 2, DOOR_SIZE / 2);
+    }
+
+    @Override
+	public boolean isSelected() {
+    	return isSelected;
+    }
+    
+    @Override
+    public void setSelected(boolean selected) {
+    	isSelected = selected;
     }
 }

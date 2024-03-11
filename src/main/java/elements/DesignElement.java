@@ -8,6 +8,9 @@ import java.awt.*;
  * @author ChatGPT
  */
 public interface DesignElement {
-    public void draw(Graphics2D g, Point start);
+    public void setStartPoint(Point startPoint);
+    public void draw(Graphics2D g);
     public Rectangle getBounds();
+    public boolean isSelected();
+    public void setSelected(boolean selected);
 }

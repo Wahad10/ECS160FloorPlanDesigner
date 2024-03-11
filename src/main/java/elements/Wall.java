@@ -13,25 +13,16 @@ public class Wall implements DesignElement{
     protected int thickness;
     private Point startPoint;
     private Point endPoint;
+    private boolean isSelected = false;
 
     public Wall(Color color, int thickness) {
         this.color = color;
         this.thickness = thickness;
     }
     
-    @Override
-    public void draw(Graphics2D g, Point start) {
-        if (startPoint != null && endPoint != null) {
-            Point adjustedEnd = calculateAdjustedEnd(startPoint, endPoint);
-            g.setColor(color);
-            g.setStroke(new BasicStroke(thickness, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
-            g.drawLine(startPoint.x, startPoint.y, adjustedEnd.x, adjustedEnd.y);
-        }
-    }
-    
     public void setStartPoint(Point startPoint) {
         this.startPoint = startPoint;
-        //this.endPoint = startPoint; // Reset end point to start point initially
+        this.endPoint = startPoint; // Reset end point to start point initially
     }
    
     public void setEndPoint(Point endPoint) {
@@ -53,11 +44,68 @@ public class Wall implements DesignElement{
     }
 
     @Override
+    public void draw(Graphics2D g) {
+        if (startPoint != null && endPoint != null && endPoint != startPoint) {
+            Point adjustedEnd = calculateAdjustedEnd(startPoint, endPoint);
+            if (isSelected == true) {
+        		g.setColor(Color.MAGENTA);
+        	} else {
+        		g.setColor(color);
+        	}
+            g.setStroke(new BasicStroke(thickness, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
+            g.drawLine(startPoint.x, startPoint.y, adjustedEnd.x, adjustedEnd.y);
+        }
+    }
+
+    @Override
     public Rectangle getBounds() {
-        int x = Math.min(startPoint.x, endPoint.x);
-        int y = Math.min(startPoint.y, endPoint.y);
-        int width = Math.abs(startPoint.x - endPoint.x);
-        int height = Math.abs(startPoint.y - endPoint.y);
-        return new Rectangle(x, y, width, height);
+        if (startPoint == null || endPoint == null) {
+            return new Rectangle();
+        }
+    
+        Point adjustedEnd = calculateAdjustedEnd(startPoint, endPoint);
+    
+        int minX = Math.min(startPoint.x, adjustedEnd.x);
+        int minY = Math.min(startPoint.y, adjustedEnd.y);
+        int maxX = Math.max(startPoint.x, adjustedEnd.x);
+        int maxY = Math.max(startPoint.y, adjustedEnd.y);
+    
+        // Adjust bounds for the line thickness
+        int halfThickness = thickness / 2;
+        minX -= halfThickness;
+        minY -= halfThickness;
+        maxX += halfThickness;
+        maxY += halfThickness;
+    
+        int width = maxX - minX;
+        int height = maxY - minY;
+
+        System.out.println("Wall Bounds:" + minX + "," + minY + "," + width + "," + height);
+    
+        return new Rectangle(minX, minY, width, height);
+
+
+        /**Point adjustedEnd = calculateAdjustedEnd(startPoint, endPoint);
+        int x = Math.min(startPoint.x, adjustedEnd.x);
+        int y = Math.min(startPoint.y, adjustedEnd.y);
+        int width = Math.abs(startPoint.x - adjustedEnd.x);
+        int height = Math.abs(startPoint.y - adjustedEnd.y);
+        if(width == 0){
+            width = 3;
+        }else if(height == 0){
+            height = 3;
+        }
+        System.out.println("Wall Bounds:" + x + "," + y + "," + width + "," + height);
+        return new Rectangle(x, y, width, height);**/
+    }
+
+    @Override
+	public boolean isSelected() {
+    	return isSelected;
+    }
+    
+    @Override
+    public void setSelected(boolean selected) {
+    	isSelected = selected;
     }
 }
