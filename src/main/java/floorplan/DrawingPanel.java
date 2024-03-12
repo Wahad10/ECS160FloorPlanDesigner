@@ -3,7 +3,7 @@ package floorplan;
 import java.util.*;
 import java.util.List;
 
-import javax.imageio.ImageIO;
+//import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import elements.*;
@@ -34,6 +34,7 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
     private List<DesignElement> designElements;
     private DesignElement currentElement;
     private ManipulationFunction currentFunction;
+    private Select selectFunction;
 
     public DrawingPanel(int width, int height) {
         canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -142,6 +143,10 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
         currentElement = null;
         currentFunction = function;
 
+        if(currentFunction instanceof Select){
+            selectFunction = (Select)currentFunction;
+        }
+
         //perform remove immediately on click
         if(currentFunction instanceof Remove){
             currentFunction.performFunction(lastPoint);
@@ -181,6 +186,7 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
     public void clearCanvas() {
         eraseCanvas();
         if(designElements != null){
+            selectFunction.clearSelection();
             designElements.clear();
         }
         repaint();
@@ -188,11 +194,7 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
 
     public void saveImage() {
         //clear selections before saving
-        for (DesignElement element : designElements) {
-            if (element.isSelected()) {
-                element.setSelected(false);
-            }
-        }
+        selectFunction.clearSelection();
 
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Save Image");

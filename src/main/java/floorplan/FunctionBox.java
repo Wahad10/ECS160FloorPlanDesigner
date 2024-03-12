@@ -13,14 +13,10 @@ import java.util.List;
  * @author Wahad Latif and ChatGPT
  *
  */
-
 public class FunctionBox extends JPanel {
-    //private DrawingPanel drawingPanel;
     private List<FunctionSelectedObserver> observers = new ArrayList<>();
 
     public FunctionBox(DrawingPanel drawingPanel) {
-        //this.drawingPanel = drawingPanel;
-
         setLayout(new GridLayout(1, 5));
         Select selectFunction = new Select(drawingPanel);
         addFunction(selectFunction);
@@ -28,7 +24,6 @@ public class FunctionBox extends JPanel {
         addFunction(new Remove(drawingPanel, selectFunction));
         addFunction(new Rotate(drawingPanel, selectFunction));
         addFunction(new Resize(drawingPanel, selectFunction));
-        //Add other functions, MOVE, REMOVE, ROTATE, RESIZE
     }
 
     private void addFunction(ManipulationFunction function) {

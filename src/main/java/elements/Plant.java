@@ -9,10 +9,14 @@ import java.awt.*;
  */
 public class Plant implements DesignElement {
 
-    private static final int PLANT_WIDTH = 40;
-    private static final int PLANT_HEIGHT = 40;
+    private int plantWidth = 40;
+    private int plantHeight = 40;
     private Point startPoint;
     private boolean isSelected = false;
+
+    public Point getStartPoint() {
+        return startPoint;
+    }
 
     public void setStartPoint(Point startPoint) {
         this.startPoint = startPoint;
@@ -25,12 +29,12 @@ public class Plant implements DesignElement {
     	} else {
     		g.setColor(Color.GREEN);
     	}
-        g.fillRect(startPoint.x - PLANT_WIDTH / 2, startPoint.y - PLANT_HEIGHT / 2, PLANT_WIDTH, PLANT_HEIGHT);
+        g.fillRect(startPoint.x - plantWidth / 2, startPoint.y - plantHeight / 2, plantWidth, plantHeight);
     }
 
     @Override
     public Rectangle getBounds() {
-        return new Rectangle(startPoint.x - PLANT_WIDTH / 2, startPoint.y - PLANT_HEIGHT / 2, PLANT_WIDTH, PLANT_HEIGHT);
+        return new Rectangle(startPoint.x - plantWidth / 2, startPoint.y - plantHeight / 2, plantWidth, plantHeight);
     }
 
     @Override
@@ -41,6 +45,12 @@ public class Plant implements DesignElement {
     @Override
     public void setSelected(boolean selected) {
     	isSelected = selected;
+    }
+
+    @Override
+    public void resize(int width, int height) {
+    	plantWidth = width;
+        plantHeight = height;
     }
 }
 

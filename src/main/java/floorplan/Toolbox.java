@@ -14,9 +14,7 @@ import java.util.List;
  * @author Wahad Latif and ChatGPT
  *
  */
-
 public class Toolbox extends JPanel {
-
     private List<ElementSelectedObserver> observers = new ArrayList<>();
 
     public Toolbox() {
@@ -25,12 +23,11 @@ public class Toolbox extends JPanel {
         addElement(new Door());
         addElement(new Window());
         addElement(new Furniture());
-        // Add other design elements as needed, NO NEED ADD FURNITURE ELEMENTS BELOW
     }
 
     private void addElement(DesignElement element) {
         JButton button = new JButton(element.getClass().getSimpleName());
-        //button.addActionListener(e -> notifyObservers(element));
+        
         button.addActionListener(e -> {
             if (element instanceof Furniture) {
                 JPopupMenu menu = new JPopupMenu();

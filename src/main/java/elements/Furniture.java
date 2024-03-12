@@ -9,10 +9,14 @@ import java.awt.*;
  */
 public class Furniture implements DesignElement {
 
-    private static final int FURNITURE_WIDTH = 40;
-    private static final int FURNITURE_HEIGHT = 40;
+    private int furnitureWidth = 40;
+    private int furnitureHeight = 40;
     private Point startPoint;
     private boolean isSelected = false;
+
+    public Point getStartPoint() {
+        return startPoint;
+    }
 
     public void setStartPoint(Point startPoint) {
         this.startPoint = startPoint;
@@ -21,12 +25,12 @@ public class Furniture implements DesignElement {
     @Override
     public void draw(Graphics2D g) {
         g.setColor(Color.ORANGE);
-        g.fillRect(startPoint.x - FURNITURE_WIDTH / 2, startPoint.y - FURNITURE_HEIGHT / 2, FURNITURE_WIDTH, FURNITURE_HEIGHT);
+        g.fillRect(startPoint.x - furnitureWidth / 2, startPoint.y - furnitureHeight / 2, furnitureWidth, furnitureHeight);
     }
 
     @Override
     public Rectangle getBounds() {
-        return new Rectangle(startPoint.x - FURNITURE_WIDTH / 2, startPoint.y - FURNITURE_HEIGHT / 2, FURNITURE_WIDTH, FURNITURE_HEIGHT);
+        return new Rectangle(startPoint.x - furnitureWidth / 2, startPoint.y - furnitureHeight / 2, furnitureWidth, furnitureHeight);
     }
 
     @Override
@@ -37,6 +41,12 @@ public class Furniture implements DesignElement {
     @Override
     public void setSelected(boolean selected) {
     	isSelected = selected;
+    }
+
+    @Override
+    public void resize(int width, int height) {
+    	furnitureWidth = width;
+        furnitureHeight = height;
     }
 }
 

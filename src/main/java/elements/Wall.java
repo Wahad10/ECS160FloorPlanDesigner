@@ -19,6 +19,10 @@ public class Wall implements DesignElement{
         this.color = color;
         this.thickness = thickness;
     }
+
+    public Point getStartPoint() {
+        return startPoint;
+    }
     
     public void setStartPoint(Point startPoint) {
         if(this.endPoint == null){
@@ -98,5 +102,10 @@ public class Wall implements DesignElement{
     @Override
     public void setSelected(boolean selected) {
     	isSelected = selected;
+    }
+
+    @Override
+    public void resize(int width, int height) {
+    	//cant resize wall
     }
 }
