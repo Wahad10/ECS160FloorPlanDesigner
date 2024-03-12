@@ -21,12 +21,24 @@ public class Wall implements DesignElement{
     }
     
     public void setStartPoint(Point startPoint) {
-        this.startPoint = startPoint;
-        this.endPoint = startPoint; // Reset end point to start point initially
+        if(this.endPoint == null){
+            this.startPoint = startPoint;
+            this.endPoint = startPoint; // Reset end point to start point initially
+        }else{
+            if(this.startPoint.x == this.endPoint.x){
+                int ydiff = this.endPoint.y - this.startPoint.y;
+                this.startPoint = startPoint;
+                this.endPoint = new Point(this.startPoint.x, this.startPoint.y + ydiff);
+            }else{
+                int xdiff = this.endPoint.x - this.startPoint.x;
+                this.startPoint = startPoint;
+                this.endPoint = new Point(this.startPoint.x + xdiff, this.startPoint.y);
+            }
+        }
     }
-   
+        
     public void setEndPoint(Point endPoint) {
-        this.endPoint = endPoint;
+        this.endPoint = calculateAdjustedEnd(startPoint, endPoint);
     }
 
     private Point calculateAdjustedEnd(Point start, Point end) {
@@ -42,14 +54,13 @@ public class Wall implements DesignElement{
     @Override
     public void draw(Graphics2D g) {
         if (startPoint != null && endPoint != null && endPoint != startPoint) {
-            Point adjustedEnd = calculateAdjustedEnd(startPoint, endPoint);
             if (isSelected == true) {
         		g.setColor(Color.MAGENTA);
         	} else {
         		g.setColor(color);
         	}
             g.setStroke(new BasicStroke(thickness, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
-            g.drawLine(startPoint.x, startPoint.y, adjustedEnd.x, adjustedEnd.y);
+            g.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
         }
     }
 
@@ -59,12 +70,10 @@ public class Wall implements DesignElement{
             return new Rectangle();
         }
     
-        Point adjustedEnd = calculateAdjustedEnd(startPoint, endPoint);
-    
-        int minX = Math.min(startPoint.x, adjustedEnd.x);
-        int minY = Math.min(startPoint.y, adjustedEnd.y);
-        int maxX = Math.max(startPoint.x, adjustedEnd.x);
-        int maxY = Math.max(startPoint.y, adjustedEnd.y);
+        int minX = Math.min(startPoint.x, endPoint.x);
+        int minY = Math.min(startPoint.y, endPoint.y);
+        int maxX = Math.max(startPoint.x, endPoint.x);
+        int maxY = Math.max(startPoint.y, endPoint.y);
     
         // Adjust bounds for the line thickness
         int halfThickness = thickness / 2;

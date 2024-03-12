@@ -13,7 +13,11 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationTargetException;
 
 import functions.*;
@@ -183,27 +187,40 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
     }
 
     public void saveImage() {
+        //clear selections before saving
+        for (DesignElement element : designElements) {
+            if (element.isSelected()) {
+                element.setSelected(false);
+            }
+        }
+
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Save Image");
         if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
-            try {
-                ImageIO.write(canvas, "PNG", file);
+            try (FileOutputStream fos = new FileOutputStream(file);
+                 ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+                // Serialize the design elements and canvas
+                oos.writeObject(designElements);
+                repaint();
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
     }
-
+    
+    @SuppressWarnings("unchecked")
     public void loadImage() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Open Image");
         if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
-            try {
-                canvas = ImageIO.read(file);
+            try (FileInputStream fis = new FileInputStream(file);
+                 ObjectInputStream ois = new ObjectInputStream(fis)) {
+                // Deserialize the design elements
+                designElements = (List<DesignElement>) ois.readObject();
                 repaint();
-            } catch (IOException ex) {
+            } catch (IOException | ClassNotFoundException ex) {
                 ex.printStackTrace();
             }
         }

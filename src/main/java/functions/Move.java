@@ -3,6 +3,7 @@ package functions;
 import java.awt.*;
 
 import floorplan.*;
+import elements.*;
 
 public class Move implements ManipulationFunction {
     private DrawingPanel drawingPanel;

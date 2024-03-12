@@ -1,13 +1,14 @@
 package elements;
 
 import java.awt.*;
+import java.io.Serializable;
 
 /**
  * Abstract interface representing a design element.
  *
  * @author ChatGPT
  */
-public interface DesignElement {
+public interface DesignElement extends Serializable {
     public void setStartPoint(Point startPoint);
     public void draw(Graphics2D g);
     public Rectangle getBounds();
