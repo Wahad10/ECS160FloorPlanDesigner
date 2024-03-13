@@ -85,14 +85,28 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
             public void mouseReleased(MouseEvent e) {
                 // Return if it wasn't the left mouse button
                 if (e.getButton() != MouseEvent.BUTTON1) {return;}
+                lastPoint = e.getPoint();
 
                 if (currentElement instanceof Wall && currentFunction == null) {
-                    ((Wall)currentElement).setEndPoint(e.getPoint());
-                    //drawElement(lastPoint);
+                    ((Wall)currentElement).setEndPoint(lastPoint);
                     repaint();
                 }
             }
 
+        });
+
+        addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+                // Return if it wasn't the left mouse button
+                if (!SwingUtilities.isLeftMouseButton(e)) {return;}
+                lastPoint = e.getPoint();
+
+                if (currentElement instanceof Wall && currentFunction == null) {
+                    ((Wall)currentElement).setEndPoint(lastPoint);
+                    repaint();
+                }
+            }
         });
 
         // Add component listener to handle resizing
