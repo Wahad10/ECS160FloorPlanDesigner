@@ -131,6 +131,18 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
         g.drawImage(canvas, 0, 0, null);
     }
 
+    private void drawGrid(Graphics g) {
+        // Draw the grid lines
+        int gridSize = 20; // Adjust this value to change the grid size
+        g.setColor(Color.LIGHT_GRAY);
+        for (int x = 0; x < getWidth(); x += gridSize) {
+            g.drawLine(x, 0, x, getHeight());
+        }
+        for (int y = 0; y < getHeight(); y += gridSize) {
+            g.drawLine(0, y, getWidth(), y);
+        }
+    }
+
     private void drawElements(List<DesignElement> designElements) {
         Graphics2D g2d = canvas.createGraphics();
 
@@ -142,14 +154,14 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
         g2d.dispose();
     }
 
+    public List<DesignElement> getDesignElements(){
+        return designElements;
+    }
+
     @Override
     public void onElementSelected(DesignElement element) {
         currentElement = element;
         currentFunction = null;
-    }
-
-    public List<DesignElement> getDesignElements(){
-        return designElements;
     }
 
     @Override
@@ -165,18 +177,6 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
         if(currentFunction instanceof Remove){
             currentFunction.performFunction(lastPoint);
             currentFunction = null;
-        }
-    }
-
-    private void drawGrid(Graphics g) {
-        // Draw the grid lines
-        int gridSize = 20; // Adjust this value to change the grid size
-        g.setColor(Color.LIGHT_GRAY);
-        for (int x = 0; x < getWidth(); x += gridSize) {
-            g.drawLine(x, 0, x, getHeight());
-        }
-        for (int y = 0; y < getHeight(); y += gridSize) {
-            g.drawLine(0, y, getWidth(), y);
         }
     }
 
@@ -200,7 +200,7 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
     public void clearCanvas() {
         eraseCanvas();
         if(designElements != null){
-            selectFunction.clearSelection();
+            if(selectFunction != null){selectFunction.clearSelection();}
             designElements.clear();
         }
         repaint();
