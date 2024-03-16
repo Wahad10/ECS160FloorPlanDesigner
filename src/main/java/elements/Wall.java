@@ -1,6 +1,7 @@
 package elements;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 
 /**
  * Class representing a wall design element.
@@ -13,6 +14,7 @@ public class Wall implements DesignElement{
     private Point startPoint;
     private Point endPoint;
     private boolean isSelected = false;
+    private int rotationAngle = 0;
 
     public Point getStartPoint() {
         return startPoint;
@@ -58,7 +60,25 @@ public class Wall implements DesignElement{
         		g.setColor(Color.BLACK);
         	}
             g.setStroke(new BasicStroke(wallThickness, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
-            g.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+            
+            //first draw
+            if(rotationAngle == 0){
+                g.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+            //rotate draw
+            }else{
+                // Save the current graphics transformation
+                AffineTransform oldTransform = g.getTransform();
+
+                // Translate and rotate the graphics context to draw at the desired position and angle
+                g.translate(startPoint.x, startPoint.y);
+                g.rotate(Math.toRadians(rotationAngle));
+
+                g.drawLine(0, 0, endPoint.x - startPoint.x, endPoint.y - startPoint.y);
+
+                // Restore the old graphics transformation
+                g.setTransform(oldTransform);
+            }
+            
         }
     }
 
@@ -101,5 +121,10 @@ public class Wall implements DesignElement{
     @Override
     public void resize(double scale) {
         wallThickness = (int) (scale * DEFUALT_WALL_THICKNESS);
+    }
+
+    @Override
+    public void rotate(int angle) {
+        rotationAngle = angle;
     }
 }

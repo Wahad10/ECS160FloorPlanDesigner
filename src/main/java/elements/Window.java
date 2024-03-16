@@ -1,6 +1,7 @@
 package elements;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 
 /**
  * Class representing a window design element.
@@ -14,6 +15,7 @@ public class Window implements DesignElement {
     private int windowHeight = DEFAULT_WINDOW_HEIGHT;
     private Point startPoint;
     private boolean isSelected = false;
+    private int rotationAngle = 0;
 
     public Point getStartPoint() {
         return startPoint;
@@ -30,7 +32,19 @@ public class Window implements DesignElement {
     	} else {
     		g.setColor(Color.BLUE);
     	}
-        g.fillRect(startPoint.x - windowWidth / 2, startPoint.y - windowHeight / 2, windowWidth, windowHeight);
+
+
+        // Save the current graphics transformation
+        AffineTransform oldTransform = g.getTransform();
+
+        // Translate and rotate the graphics context to draw the bed at the desired position and angle
+        g.translate(startPoint.x, startPoint.y);
+        g.rotate(Math.toRadians(rotationAngle));
+
+        g.fillRect( - windowWidth / 2, - windowHeight / 2, windowWidth, windowHeight);
+
+        // Restore the old graphics transformation
+        g.setTransform(oldTransform);
     }
 
     @Override
@@ -52,6 +66,11 @@ public class Window implements DesignElement {
     public void resize(double scale) {
         windowWidth = (int) (scale * DEFAULT_WINDOW_WIDTH);
         windowHeight = (int) (scale * DEFAULT_WINDOW_HEIGHT);
+    }
+
+    @Override
+    public void rotate(int angle) {
+        rotationAngle = angle;
     }
 }
 

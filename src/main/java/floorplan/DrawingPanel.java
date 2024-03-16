@@ -35,6 +35,7 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
     private ManipulationFunction currentFunction;
     private Select selectFunction;
     private Resize resizeSlider;
+    private Rotate rotateSlider;
 
     public DrawingPanel(int width, int height) {
         canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -167,6 +168,8 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
     public void onElementSelected(DesignElement element) {
         currentElement = element;
         currentFunction = null;
+
+        //should i hide resizeslider?
     }
 
     @Override
@@ -186,7 +189,7 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
 
         if(currentFunction instanceof Resize && selectFunction != null){
             // Initialize the slider
-            resizeSlider = (Resize) currentFunction; // Assuming original size is at 1 50
+            resizeSlider = (Resize)currentFunction; // Assuming original size is at 1 50
             setLayout(new BorderLayout());
             add(resizeSlider, BorderLayout.NORTH);
             
@@ -198,17 +201,31 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
             }
             //first time clicekd resize to start resize
             resizeSlider.setVisible(true);
+        }
 
-            // Add a listener to handle resizing
-            resizeSlider.addChangeListener(e -> {
-                double scaleFactor = (double) resizeSlider.getValue() / 100; // 50.0; // Scale factor from 0.0 to 2.0
-                // Resize the selected design element
-                if (selectFunction.selectedElement != null) {
-                    //currentFunction.performFunction((int)scaleFactor);
-                    selectFunction.selectedElement.resize(scaleFactor);
-                    repaint(); // Repaint the canvas
-                }
-            });
+        if(!(currentFunction instanceof Resize) && resizeSlider != null){
+            resizeSlider.setVisible(false);
+        }
+
+
+        if(currentFunction instanceof Rotate && selectFunction != null){
+            // Initialize the slider
+            rotateSlider = (Rotate)currentFunction; // Assuming original size is at 1 50
+            setLayout(new BorderLayout());
+            add(rotateSlider, BorderLayout.NORTH);
+            
+            //clicked resize second time to confirm
+            if (rotateSlider.isVisible()) {
+                rotateSlider.setVisible(false);
+                selectFunction.clearSelection();
+                return;
+            }
+            //first time clicekd resize to start resize
+            rotateSlider.setVisible(true);
+        }
+
+        if(!(currentFunction instanceof Rotate) && rotateSlider != null){
+            rotateSlider.setVisible(false);
         }
     }
 

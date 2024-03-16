@@ -1,6 +1,7 @@
 package elements;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 
 public class Door implements DesignElement {
     private static final int DEFAULT_DOOR_WIDTH = 80; // Diameter of the door
@@ -9,6 +10,7 @@ public class Door implements DesignElement {
     private int doorHeight = DEFAULT_DOOR_HEIGHT;
     private Point startPoint;
     private boolean isSelected = false;
+    private int rotationAngle = 0;
 
     /**public Door(Color color, int thickness) {
         super(color, thickness);
@@ -30,9 +32,17 @@ public class Door implements DesignElement {
             g.setColor(Color.RED);
         }
         g.setStroke(new BasicStroke(2));
+        
 
-        int x = startPoint.x - doorWidth / 2;
-        int y = startPoint.y - doorHeight / 2;
+        int x = - doorWidth / 2;
+        int y = - doorHeight / 2;
+
+        // Save the current graphics transformation
+        AffineTransform oldTransform = g.getTransform();
+
+        // Translate and rotate the graphics context to draw the bed at the desired position and angle
+        g.translate(startPoint.x, startPoint.y);
+        g.rotate(Math.toRadians(rotationAngle));
 
         // Draw the quarter circle
         g.drawArc(x, y, doorWidth, doorHeight, 90, 90);
@@ -47,6 +57,9 @@ public class Door implements DesignElement {
 
         // Draw a line from the center of the circle to the arc
         g.drawLine(centerX, centerY, endX, endY);
+    
+        // Restore the old graphics transformation
+        g.setTransform(oldTransform);
 
     }
 
@@ -71,5 +84,10 @@ public class Door implements DesignElement {
     public void resize(double scale) {
     	doorWidth = (int) (scale * DEFAULT_DOOR_WIDTH);
         doorHeight = (int) (scale * DEFAULT_DOOR_HEIGHT);
+    }
+
+    @Override
+    public void rotate(int angle) {
+        rotationAngle = angle;
     }
 }

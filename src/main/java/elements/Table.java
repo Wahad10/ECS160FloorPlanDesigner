@@ -1,6 +1,7 @@
 package elements;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 
 /**
  * Class representing a table design element.
@@ -14,6 +15,7 @@ public class Table implements DesignElement {
     private int tableHeight = DEFAULT_TABLE_HEIGHT;
     private Point startPoint;
     private boolean isSelected = false;
+    private int rotationAngle = 0;
 
     public Point getStartPoint() {
         return startPoint;
@@ -30,7 +32,19 @@ public class Table implements DesignElement {
     	} else {
     		g.setColor(Color.YELLOW);
     	}
-        g.fillRect(startPoint.x - tableWidth / 2, startPoint.y - tableHeight / 2, tableWidth, tableHeight);
+
+
+        // Save the current graphics transformation
+        AffineTransform oldTransform = g.getTransform();
+
+        // Translate and rotate the graphics context to draw the bed at the desired position and angle
+        g.translate(startPoint.x, startPoint.y);
+        g.rotate(Math.toRadians(rotationAngle));
+
+        g.fillRect( - tableWidth / 2, - tableHeight / 2, tableWidth, tableHeight);
+
+        // Restore the old graphics transformation
+        g.setTransform(oldTransform);
     }
 
     @Override
@@ -52,5 +66,10 @@ public class Table implements DesignElement {
     public void resize(double scale) {
         tableWidth = (int) (scale * DEFAULT_TABLE_WIDTH);
         tableHeight = (int) (scale * DEFAULT_TABLE_HEIGHT);
+    }
+
+    @Override
+    public void rotate(int angle) {
+        rotationAngle = angle;
     }
 }

@@ -16,4 +16,5 @@ public interface DesignElement extends Serializable {
     public boolean isSelected();
     public void setSelected(boolean selected);
     public void resize(double scale);
+    public void rotate(int angle);
 }

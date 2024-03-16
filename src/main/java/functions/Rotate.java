@@ -1,32 +1,36 @@
 package functions;
 
 import java.awt.*;
+import javax.swing.*;
 
 import floorplan.*;
 
-public class Rotate implements ManipulationFunction {
+public class Rotate extends JSlider implements ManipulationFunction {
     private DrawingPanel drawingPanel;
     private Select selectFunction;
 
     public Rotate(DrawingPanel drawingPanel, Select selectFunction) {
+        super(JSlider.HORIZONTAL, 0, 360, 0); // Assuming original angle at 0
         this.drawingPanel = drawingPanel;
         this.selectFunction = selectFunction;
+        
+        setMajorTickSpacing(90);
+        setPaintTicks(true);
+        setPaintLabels(true);
+
+        setVisible(false);
+
+        // Add a listener to handle resizing
+        addChangeListener(e -> performFunction(new Point()));
     }
 
     @Override
     public void performFunction(Point clickedPoint) {
-        // Handle the null points gracefully (throw an exception, log a message, etc.)
-        if (clickedPoint == null) {return;}
-
-        // Perform move logic for the element
+        int rotateFactor = getValue(); // Rotate factor from 0 to 360
+        // Resize the selected design element
         if (selectFunction.selectedElement != null) {
-            //Get user input of new point to move to (moving to clicked point)
-            selectFunction.selectedElement.setStartPoint(clickedPoint);
-
-            selectFunction.clearSelection();
+            selectFunction.selectedElement.rotate(rotateFactor);
+            drawingPanel.repaint();
         }
-
-        // Redraw the canvas to reflect the changes
-        drawingPanel.repaint();
     }
 }

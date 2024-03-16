@@ -1,6 +1,7 @@
 package elements;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 
 /**
  * Class representing a plant design element.
@@ -14,6 +15,7 @@ public class Plant implements DesignElement {
     private int plantHeight = DEFAULT_PLANT_HEIGHT;
     private Point startPoint;
     private boolean isSelected = false;
+    private int rotationAngle = 0;
 
     public Point getStartPoint() {
         return startPoint;
@@ -30,7 +32,20 @@ public class Plant implements DesignElement {
     	} else {
     		g.setColor(Color.GREEN);
     	}
-        g.fillRect(startPoint.x - plantWidth / 2, startPoint.y - plantHeight / 2, plantWidth, plantHeight);
+
+
+        // Save the current graphics transformation
+        AffineTransform oldTransform = g.getTransform();
+
+        // Translate and rotate the graphics context to draw the bed at the desired position and angle
+        g.translate(startPoint.x, startPoint.y);
+        g.rotate(Math.toRadians(rotationAngle));
+
+        g.fillRect(- plantWidth / 2, - plantHeight / 2, plantWidth, plantHeight);
+
+        // Restore the old graphics transformation
+        g.setTransform(oldTransform);
+
     }
 
     @Override
@@ -52,6 +67,11 @@ public class Plant implements DesignElement {
     public void resize(double scale) {
         plantWidth = (int) (scale * DEFAULT_PLANT_WIDTH);
         plantHeight = (int) (scale * DEFAULT_PLANT_HEIGHT);
+    }
+
+    @Override
+    public void rotate(int angle) {
+        rotationAngle = angle;
     }
 }
 

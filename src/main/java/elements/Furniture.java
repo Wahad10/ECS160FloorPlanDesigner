@@ -14,6 +14,7 @@ public class Furniture implements DesignElement {
     private int furnitureHeight = DEFAULT_FURNITURE_HEIGHT;
     private Point startPoint;
     private boolean isSelected = false;
+    private int rotationAngle = 0;
 
     public Point getStartPoint() {
         return startPoint;
@@ -48,6 +49,11 @@ public class Furniture implements DesignElement {
     public void resize(double scale) {
         furnitureWidth = (int) (scale * DEFAULT_FURNITURE_WIDTH);
         furnitureHeight = (int) (scale * DEFAULT_FURNITURE_HEIGHT);
+    }
+
+    @Override
+    public void rotate(int angle) {
+        rotationAngle = angle;
     }
 }
 
