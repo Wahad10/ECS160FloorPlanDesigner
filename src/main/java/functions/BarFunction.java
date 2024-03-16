@@ -14,10 +14,10 @@ import java.util.List;
  * @author Wahad Latif and ChatGPT
  *
  */
-public class FunctionBox extends JPanel {
+public class BarFunction extends JPanel {
     private List<FunctionSelectedObserver> observers = new ArrayList<>();
 
-    public FunctionBox(DrawingPanel drawingPanel) {
+    public BarFunction(DrawingPanel drawingPanel) {
         setLayout(new GridLayout(1, 5));
         Select selectFunction = new Select(drawingPanel);
         addFunction(selectFunction);

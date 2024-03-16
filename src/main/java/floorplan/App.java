@@ -3,8 +3,8 @@ package floorplan;
 import java.awt.*;
 import javax.swing.*;
 
-import elements.ElementBox;
-import functions.FunctionBox;
+import elements.BarElement;
+import functions.BarFunction;
 
 /**
  * Simple Floor Plan Designer using Java Swing.
@@ -15,8 +15,8 @@ import functions.FunctionBox;
 public class App extends JFrame {
 
     private DrawingPanel drawingPanel;
-    private ElementBox toolbox;
-    private FunctionBox functionbox;
+    private BarElement toolbox;
+    private BarFunction functionbox;
 
     public App() {
         super("Simple Floor Plan Designer");
@@ -35,12 +35,12 @@ public class App extends JFrame {
         add(drawingPanel, BorderLayout.CENTER);
 
         // Create and add the toolbox to the east
-        toolbox = new ElementBox();
+        toolbox = new BarElement();
         add(toolbox, BorderLayout.EAST);
         toolbox.addObserver(drawingPanel);
 
         // Create and add the functionbox to the north
-        functionbox = new FunctionBox(drawingPanel);
+        functionbox = new BarFunction(drawingPanel);
         add(functionbox, BorderLayout.NORTH);
         functionbox.addObserver(drawingPanel);
 

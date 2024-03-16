@@ -13,10 +13,10 @@ import java.util.List;
  * @author Wahad Latif and ChatGPT
  *
  */
-public class ElementBox extends JPanel {
+public class BarElement extends JPanel {
     private List<ElementSelectedObserver> observers = new ArrayList<>();
 
-    public ElementBox() {
+    public BarElement() {
         setLayout(new GridLayout(4, 1));
         addElement(new Wall(Color.BLACK, 3));
         addElement(new Door());
