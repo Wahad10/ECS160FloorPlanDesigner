@@ -41,6 +41,7 @@ public class Table implements DesignElement {
         g.translate(startPoint.x, startPoint.y);
         g.rotate(Math.toRadians(rotationAngle));
 
+        //Draw the table
         g.fillRect( - tableWidth / 2, - tableHeight / 2, tableWidth, tableHeight);
 
         // Restore the old graphics transformation

@@ -32,7 +32,7 @@ public class Door implements DesignElement {
             g.setColor(Color.RED);
         }
         g.setStroke(new BasicStroke(2));
-        
+
 
         int x = - doorWidth / 2;
         int y = - doorHeight / 2;
@@ -65,9 +65,11 @@ public class Door implements DesignElement {
 
     @Override
     public Rectangle getBounds() {
-        int x = startPoint.x - doorWidth / 2;
-        int y = startPoint.y - doorHeight / 2;
-        return new Rectangle(x, y, doorWidth / 2, doorHeight / 2);
+        // Calculate the bounding box of the rotated door
+        AffineTransform transform = new AffineTransform();
+        transform.rotate(Math.toRadians(rotationAngle), startPoint.x, startPoint.y);
+        Shape rotatedShape = transform.createTransformedShape(new Rectangle(startPoint.x - doorWidth / 2, startPoint.y - doorHeight / 2, doorWidth / 2, doorHeight / 2));
+        return rotatedShape.getBounds();
     }
 
     @Override

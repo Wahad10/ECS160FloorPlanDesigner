@@ -35,7 +35,7 @@ public class Bed implements DesignElement {
         //g.fillRect(startPoint.x - bedWidth / 2, startPoint.y - bedHeight / 2, bedWidth, bedHeight);
         g.setStroke(new BasicStroke(2));
 
-        
+
         int x = - bedWidth / 2;
         int y = - bedHeight / 2;
     
@@ -64,11 +64,21 @@ public class Bed implements DesignElement {
     
         // Restore the old graphics transformation
         g.setTransform(oldTransform);
+
+        // Draw the bounding box
+        //Rectangle bounds = getBounds();
+        //g.setColor(Color.BLUE);
+        //g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
     }
 
     @Override
     public Rectangle getBounds() {
-        return new Rectangle(startPoint.x - bedWidth / 2, startPoint.y - bedHeight / 2, bedWidth, bedHeight);
+        //return new Rectangle(startPoint.x - bedWidth / 2, startPoint.y - bedHeight / 2, bedWidth, bedHeight);
+        // Calculate the bounding box of the rotated door
+        AffineTransform transform = new AffineTransform();
+        transform.rotate(Math.toRadians(rotationAngle), startPoint.x, startPoint.y);
+        Shape rotatedShape = transform.createTransformedShape(new Rectangle(startPoint.x - bedWidth / 2, startPoint.y - bedHeight / 2, bedWidth, bedHeight));
+        return rotatedShape.getBounds();
     }
 
     @Override

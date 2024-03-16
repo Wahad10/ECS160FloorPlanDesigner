@@ -44,11 +44,6 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
 
         designElements = new ArrayList<>();
 
-        // Initialize the slider
-        //resizeSlider = new Resize(this, selectFunction); // Assuming original size is at 1 50
-        //setLayout(new BorderLayout());
-        //add(resizeSlider, BorderLayout.SOUTH);
-
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
