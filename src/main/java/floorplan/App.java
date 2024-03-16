@@ -13,7 +13,6 @@ import functions.BarFunction;
  * @author ChatGPT
  */
 public class App extends JFrame {
-
     private DrawingPanel drawingPanel;
     private BarElement toolbox;
     private BarFunction functionbox;

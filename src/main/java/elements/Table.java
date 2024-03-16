@@ -8,9 +8,10 @@ import java.awt.*;
  * @author Wahad Latif
  */
 public class Table implements DesignElement {
-
-    private int tableWidth = 80;
-    private int tableHeight = 40;
+    private static final int DEFAULT_TABLE_WIDTH = 80;
+    private static final int DEFAULT_TABLE_HEIGHT = 40;
+    private int tableWidth = DEFAULT_TABLE_WIDTH;
+    private int tableHeight = DEFAULT_TABLE_HEIGHT;
     private Point startPoint;
     private boolean isSelected = false;
 
@@ -48,8 +49,8 @@ public class Table implements DesignElement {
     }
 
     @Override
-    public void resize(int width, int height) {
-    	tableWidth = width;
-        tableHeight = height;
+    public void resize(double scale) {
+        tableWidth = (int) (scale * DEFAULT_TABLE_WIDTH);
+        tableHeight = (int) (scale * DEFAULT_TABLE_HEIGHT);
     }
 }

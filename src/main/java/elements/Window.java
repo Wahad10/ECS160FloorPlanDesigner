@@ -8,9 +8,10 @@ import java.awt.*;
  * @author ChatGPT
  */
 public class Window implements DesignElement {
-
-    private int windowWidth = 40;
-    private int windowHeight = 5;
+    private static final int DEFAULT_WINDOW_WIDTH = 40;
+    private static final int DEFAULT_WINDOW_HEIGHT = 5;
+    private int windowWidth = DEFAULT_WINDOW_WIDTH;
+    private int windowHeight = DEFAULT_WINDOW_HEIGHT;
     private Point startPoint;
     private boolean isSelected = false;
 
@@ -48,9 +49,9 @@ public class Window implements DesignElement {
     }
 
     @Override
-    public void resize(int width, int height) {
-    	windowWidth = width;
-        windowHeight = height;
+    public void resize(double scale) {
+        windowWidth = (int) (scale * DEFAULT_WINDOW_WIDTH);
+        windowHeight = (int) (scale * DEFAULT_WINDOW_HEIGHT);
     }
 }
 

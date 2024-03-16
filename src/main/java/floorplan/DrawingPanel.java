@@ -28,13 +28,13 @@ import functions.*;
  * @author ChatGPT
  */
 public class DrawingPanel extends JPanel implements ElementSelectedObserver, FunctionSelectedObserver {
-
     private BufferedImage canvas;
     private Point lastPoint;
     private List<DesignElement> designElements;
     private DesignElement currentElement;
     private ManipulationFunction currentFunction;
     private Select selectFunction;
+    private Resize resizeSlider;
 
     public DrawingPanel(int width, int height) {
         canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -42,6 +42,11 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
         setPreferredSize(new Dimension(width, height));
 
         designElements = new ArrayList<>();
+
+        // Initialize the slider
+        //resizeSlider = new Resize(this, selectFunction); // Assuming original size is at 1 50
+        //setLayout(new BorderLayout());
+        //add(resizeSlider, BorderLayout.SOUTH);
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -62,7 +67,7 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
                 lastPoint = e.getPoint();
                 //Wall will only be drawn once mouse is released later
                 if (currentElement instanceof Wall) {
-                    Wall newWall = new Wall(Color.BLACK, 3);
+                    Wall newWall = new Wall();
                     currentElement = newWall;
                     currentElement.setStartPoint(lastPoint);
                     designElements.add(currentElement);
@@ -177,6 +182,33 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
         if(currentFunction instanceof Remove){
             currentFunction.performFunction(lastPoint);
             currentFunction = null;
+        }
+
+        if(currentFunction instanceof Resize && selectFunction != null){
+            // Initialize the slider
+            resizeSlider = (Resize) currentFunction; // Assuming original size is at 1 50
+            setLayout(new BorderLayout());
+            add(resizeSlider, BorderLayout.NORTH);
+            
+            //clicked resize second time to confirm
+            if (resizeSlider.isVisible()) {
+                resizeSlider.setVisible(false);
+                selectFunction.clearSelection();
+                return;
+            }
+            //first time clicekd resize to start resize
+            resizeSlider.setVisible(true);
+
+            // Add a listener to handle resizing
+            resizeSlider.addChangeListener(e -> {
+                double scaleFactor = (double) resizeSlider.getValue() / 100; // 50.0; // Scale factor from 0.0 to 2.0
+                // Resize the selected design element
+                if (selectFunction.selectedElement != null) {
+                    //currentFunction.performFunction((int)scaleFactor);
+                    selectFunction.selectedElement.resize(scaleFactor);
+                    repaint(); // Repaint the canvas
+                }
+            });
         }
     }
 

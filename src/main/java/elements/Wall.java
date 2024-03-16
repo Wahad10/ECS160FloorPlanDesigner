@@ -8,17 +8,11 @@ import java.awt.*;
  * @author ChatGPT
  */
 public class Wall implements DesignElement{
-	
-    protected Color color;
-    protected int thickness;
+    private int DEFUALT_WALL_THICKNESS = 3;
+    protected int wallThickness = DEFUALT_WALL_THICKNESS;
     private Point startPoint;
     private Point endPoint;
     private boolean isSelected = false;
-
-    public Wall(Color color, int thickness) {
-        this.color = color;
-        this.thickness = thickness;
-    }
 
     public Point getStartPoint() {
         return startPoint;
@@ -61,9 +55,9 @@ public class Wall implements DesignElement{
             if (isSelected == true) {
         		g.setColor(Color.MAGENTA);
         	} else {
-        		g.setColor(color);
+        		g.setColor(Color.BLACK);
         	}
-            g.setStroke(new BasicStroke(thickness, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
+            g.setStroke(new BasicStroke(wallThickness, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER));
             g.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
         }
     }
@@ -80,7 +74,7 @@ public class Wall implements DesignElement{
         int maxY = Math.max(startPoint.y, endPoint.y);
     
         // Adjust bounds for the line thickness
-        int halfThickness = thickness / 2;
+        int halfThickness = wallThickness / 2;
         minX -= halfThickness;
         minY -= halfThickness;
         maxX += halfThickness;
@@ -105,7 +99,7 @@ public class Wall implements DesignElement{
     }
 
     @Override
-    public void resize(int width, int height) {
-    	//cant resize wall
+    public void resize(double scale) {
+        wallThickness = (int) (scale * DEFUALT_WALL_THICKNESS);
     }
 }

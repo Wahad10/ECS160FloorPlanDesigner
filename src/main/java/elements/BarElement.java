@@ -18,7 +18,7 @@ public class BarElement extends JPanel {
 
     public BarElement() {
         setLayout(new GridLayout(4, 1));
-        addElement(new Wall(Color.BLACK, 3));
+        addElement(new Wall());
         addElement(new Door());
         addElement(new Window());
         addElement(new Furniture());

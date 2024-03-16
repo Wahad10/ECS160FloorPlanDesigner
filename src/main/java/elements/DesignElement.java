@@ -15,5 +15,5 @@ public interface DesignElement extends Serializable {
     public Rectangle getBounds();
     public boolean isSelected();
     public void setSelected(boolean selected);
-    public void resize(int width, int height);
+    public void resize(double scale);
 }

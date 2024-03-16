@@ -7,10 +7,11 @@ import java.awt.*;
  *
  * @author Wahad Latif
  */
-public class Plant implements DesignElement {
-
-    private int plantWidth = 40;
-    private int plantHeight = 40;
+public class Plant implements DesignElement { 
+    private static final int DEFAULT_PLANT_WIDTH = 40;
+    private static final int DEFAULT_PLANT_HEIGHT = 40;
+    private int plantWidth = DEFAULT_PLANT_WIDTH;
+    private int plantHeight = DEFAULT_PLANT_HEIGHT;
     private Point startPoint;
     private boolean isSelected = false;
 
@@ -48,9 +49,9 @@ public class Plant implements DesignElement {
     }
 
     @Override
-    public void resize(int width, int height) {
-    	plantWidth = width;
-        plantHeight = height;
+    public void resize(double scale) {
+        plantWidth = (int) (scale * DEFAULT_PLANT_WIDTH);
+        plantHeight = (int) (scale * DEFAULT_PLANT_HEIGHT);
     }
 }
 

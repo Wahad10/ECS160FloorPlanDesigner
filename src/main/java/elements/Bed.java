@@ -8,9 +8,10 @@ import java.awt.*;
  * @author Wahad Latif
  */
 public class Bed implements DesignElement {
-
-    private int bedWidth = 40;
-    private int bedHeight = 80;
+    private static final int DEFAULT_BED_WIDTH = 40;
+    private static final int DEFAULT_BED_HEIGHT = 80;
+    private int bedWidth = DEFAULT_BED_WIDTH;
+    private int bedHeight = DEFAULT_BED_HEIGHT;
     private Point startPoint;
     private boolean isSelected = false;
 
@@ -71,8 +72,8 @@ public class Bed implements DesignElement {
     }
 
     @Override
-    public void resize(int width, int height) {
-    	bedWidth = width;
-        bedHeight = height;
+    public void resize(double scale) {
+        bedWidth = (int) (scale * DEFAULT_BED_WIDTH);
+        bedHeight = (int) (scale * DEFAULT_BED_HEIGHT);
     }
 }

@@ -7,10 +7,11 @@ import java.awt.*;
  *
  * @author Wahad Latif
  */
-public class Furniture implements DesignElement {
-
-    private int furnitureWidth = 40;
-    private int furnitureHeight = 40;
+public class Furniture implements DesignElement {  
+    private static final int DEFAULT_FURNITURE_WIDTH = 40;
+    private static final int DEFAULT_FURNITURE_HEIGHT = 40;
+    private int furnitureWidth = DEFAULT_FURNITURE_WIDTH;
+    private int furnitureHeight = DEFAULT_FURNITURE_HEIGHT;
     private Point startPoint;
     private boolean isSelected = false;
 
@@ -44,9 +45,9 @@ public class Furniture implements DesignElement {
     }
 
     @Override
-    public void resize(int width, int height) {
-    	furnitureWidth = width;
-        furnitureHeight = height;
+    public void resize(double scale) {
+        furnitureWidth = (int) (scale * DEFAULT_FURNITURE_WIDTH);
+        furnitureHeight = (int) (scale * DEFAULT_FURNITURE_HEIGHT);
     }
 }
 

@@ -3,10 +3,10 @@ package elements;
 import java.awt.*;
 
 public class Door implements DesignElement {
-
-    //private static final int DOOR_SIZE = 80; // Diameter of the door
-    private int doorWidth = 80;
-    private int doorHeight = 80;
+    private static final int DEFAULT_DOOR_WIDTH = 80; // Diameter of the door
+    private static final int DEFAULT_DOOR_HEIGHT = 80; // Diameter of the door
+    private int doorWidth = DEFAULT_DOOR_WIDTH;
+    private int doorHeight = DEFAULT_DOOR_HEIGHT;
     private Point startPoint;
     private boolean isSelected = false;
 
@@ -68,8 +68,8 @@ public class Door implements DesignElement {
     }
 
     @Override
-    public void resize(int width, int height) {
-    	doorWidth = width;
-        doorHeight = height;
+    public void resize(double scale) {
+    	doorWidth = (int) (scale * DEFAULT_DOOR_WIDTH);
+        doorHeight = (int) (scale * DEFAULT_DOOR_HEIGHT);
     }
 }
