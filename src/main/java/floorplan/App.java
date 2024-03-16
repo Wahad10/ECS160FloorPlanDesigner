@@ -3,6 +3,9 @@ package floorplan;
 import java.awt.*;
 import javax.swing.*;
 
+import elements.ElementBox;
+import functions.FunctionBox;
+
 /**
  * Simple Floor Plan Designer using Java Swing.
  * Allows users to draw, save, load, and clear floor plans.
@@ -12,7 +15,7 @@ import javax.swing.*;
 public class App extends JFrame {
 
     private DrawingPanel drawingPanel;
-    private Toolbox toolbox;
+    private ElementBox toolbox;
     private FunctionBox functionbox;
 
     public App() {
@@ -32,7 +35,7 @@ public class App extends JFrame {
         add(drawingPanel, BorderLayout.CENTER);
 
         // Create and add the toolbox to the east
-        toolbox = new Toolbox();
+        toolbox = new ElementBox();
         add(toolbox, BorderLayout.EAST);
         toolbox.addObserver(drawingPanel);
 

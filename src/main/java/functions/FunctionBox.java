@@ -1,8 +1,9 @@
-package floorplan;
+package functions;
 
 import javax.swing.*;
 
-import functions.*;
+import floorplan.DrawingPanel;
+import floorplan.FunctionSelectedObserver;
 
 import java.awt.*;
 import java.util.ArrayList;

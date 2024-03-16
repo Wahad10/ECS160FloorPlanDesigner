@@ -1,9 +1,8 @@
-package floorplan;
+package elements;
 
 import javax.swing.*;
 
-import elements.*;
-import elements.Window;
+import floorplan.ElementSelectedObserver;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -14,10 +13,10 @@ import java.util.List;
  * @author Wahad Latif and ChatGPT
  *
  */
-public class Toolbox extends JPanel {
+public class ElementBox extends JPanel {
     private List<ElementSelectedObserver> observers = new ArrayList<>();
 
-    public Toolbox() {
+    public ElementBox() {
         setLayout(new GridLayout(4, 1));
         addElement(new Wall(Color.BLACK, 3));
         addElement(new Door());
