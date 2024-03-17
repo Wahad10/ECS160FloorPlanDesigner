@@ -17,9 +17,10 @@ public class BarElement extends JPanel {
     private List<ElementSelectedObserver> observers = new ArrayList<>();
 
     public BarElement() {
-        setLayout(new GridLayout(4, 1));
+        setLayout(new GridLayout(5, 1));
         addElement(new Wall());
-        addElement(new Door());
+        addElement(new DoorRight());
+        addElement(new DoorLeft());
         addElement(new Window());
         addElement(new Furniture());
     }

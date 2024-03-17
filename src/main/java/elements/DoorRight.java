@@ -3,7 +3,7 @@ package elements;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
-public class Door implements DesignElement {
+public class DoorRight implements DesignElement {
     private static final int DEFAULT_DOOR_WIDTH = 80; // Diameter of the door
     private static final int DEFAULT_DOOR_HEIGHT = 80; // Diameter of the door
     private int doorWidth = DEFAULT_DOOR_WIDTH;
