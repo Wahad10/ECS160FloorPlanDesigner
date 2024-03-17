@@ -68,11 +68,11 @@ public class BarElement extends JPanel {
                 menu.add(bedItem);
                 menu.add(chairItem);
                 menu.add(sofaItem);
-                menu.add(bedItem);
                 menu.add(deskItem);
                 menu.add(plantItem);
                 menu.add(stoveItem);
                 menu.add(toiletItem);
+                menu.add(tableItem);
                 // Add more furniture items to the menu
 
                 //int x = button.getLocationOnScreen().x - button.getWidth();

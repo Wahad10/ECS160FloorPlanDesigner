@@ -40,7 +40,7 @@ public class Select implements ManipulationFunction {
         List<DesignElement> elements = drawingPanel.getDesignElements();
         for (int i = elements.size() - 1; i >= 0; i--) {
             DesignElement element = elements.get(i);
-            Rectangle bounds = element.getBounds();
+            Shape bounds = element.getBounds();
             if (bounds.contains(point)) {
                 return element;
             }

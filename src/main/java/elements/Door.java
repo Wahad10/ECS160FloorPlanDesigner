@@ -60,16 +60,36 @@ public class Door implements DesignElement {
     
         // Restore the old graphics transformation
         g.setTransform(oldTransform);
-
     }
 
     @Override
-    public Rectangle getBounds() {
-        // Calculate the bounding box of the rotated door
-        AffineTransform transform = new AffineTransform();
-        transform.rotate(Math.toRadians(rotationAngle), startPoint.x, startPoint.y);
-        Shape rotatedShape = transform.createTransformedShape(new Rectangle(startPoint.x - doorWidth / 2, startPoint.y - doorHeight / 2, doorWidth / 2, doorHeight / 2));
-        return rotatedShape.getBounds();
+    public Shape getBounds() {
+        // Calculate the coordinates of the corners of the unrotated rectangle
+        int x1 = -doorWidth / 2;
+        int y1 = -doorHeight / 2;
+        int x2 = 0;
+        int y2 = -doorHeight / 2;
+        int x3 = 0;
+        int y3 = 0;
+        int x4 = -doorWidth / 2;
+        int y4 = 0;
+
+        // Apply the rotation to each corner
+        double cosTheta = Math.cos(Math.toRadians(rotationAngle));
+        double sinTheta = Math.sin(Math.toRadians(rotationAngle));
+
+        int[] xPoints = {(int) (x1 * cosTheta - y1 * sinTheta), (int) (x2 * cosTheta - y2 * sinTheta),
+                (int) (x3 * cosTheta - y3 * sinTheta), (int) (x4 * cosTheta - y4 * sinTheta)};
+        int[] yPoints = {(int) (x1 * sinTheta + y1 * cosTheta), (int) (x2 * sinTheta + y2 * cosTheta),
+                (int) (x3 * sinTheta + y3 * cosTheta), (int) (x4 * sinTheta + y4 * cosTheta)};
+
+        // Create a polygon from the rotated corners
+        Polygon polygon = new Polygon(xPoints, yPoints, 4);
+
+        // Translate the polygon to the start point
+        polygon.translate(startPoint.x, startPoint.y);
+
+        return polygon;
     }
 
     @Override

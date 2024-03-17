@@ -64,12 +64,40 @@ public class Sofa implements DesignElement {
     }
 
     @Override
-    public Rectangle getBounds() {
-        // Calculate the bounding box of the sofa
-        AffineTransform transform = new AffineTransform();
-        transform.rotate(Math.toRadians(rotationAngle), startPoint.x, startPoint.y);
-        Shape rotatedShape = transform.createTransformedShape(new Rectangle(startPoint.x - sofaWidth / 2, startPoint.y - sofaHeight / 2, sofaWidth, sofaHeight));
-        return rotatedShape.getBounds();
+    public Shape getBounds() {
+        // Calculate the center of the sofa
+        int centerX = startPoint.x;
+        int centerY = startPoint.y + sofaHeight / 2;
+
+        // Calculate the coordinates of the corners of the unrotated rectangle
+        int x1 = -sofaWidth / 2 -sofaWidth / 6 ;
+        int y1 = -sofaWidth / 2;
+        int x2 = sofaWidth / 2 + sofaWidth / 6 ;
+        int y2 = -sofaWidth / 2;
+        int x3 = sofaWidth / 2 + sofaWidth / 6 ;
+        int y3 = sofaHeight -sofaWidth / 8;
+        int x4 = -sofaWidth / 2 - sofaWidth / 6;
+        int y4 = sofaHeight -sofaWidth / 8;
+
+        // Apply the rotation to each corner
+        double cosTheta = Math.cos(Math.toRadians(rotationAngle));
+        double sinTheta = Math.sin(Math.toRadians(rotationAngle));
+
+        int[] xPoints = {(int) (x1 * cosTheta - y1 * sinTheta), (int) (x2 * cosTheta - y2 * sinTheta),
+                (int) (x3 * cosTheta - y3 * sinTheta), (int) (x4 * cosTheta - y4 * sinTheta)};
+        int[] yPoints = {(int) (x1 * sinTheta + y1 * cosTheta), (int) (x2 * sinTheta + y2 * cosTheta),
+                (int) (x3 * sinTheta + y3 * cosTheta), (int) (x4 * sinTheta + y4 * cosTheta)};
+
+        // Translate the rotated points to the center of the sofa
+        for (int i = 0; i < 4; i++) {
+            xPoints[i] += centerX;
+            yPoints[i] += centerY;
+        }
+
+        // Create a polygon from the rotated corners
+        Polygon polygon = new Polygon(xPoints, yPoints, 4);
+
+        return polygon;
     }
 
     @Override

@@ -2,7 +2,6 @@ package elements;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
 
 /**
  * Class representing a plant design element.

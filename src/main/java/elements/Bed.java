@@ -64,21 +64,36 @@ public class Bed implements DesignElement {
     
         // Restore the old graphics transformation
         g.setTransform(oldTransform);
-
-        // Draw the bounding box
-        //Rectangle bounds = getBounds();
-        //g.setColor(Color.BLUE);
-        //g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
     }
 
     @Override
-    public Rectangle getBounds() {
-        //return new Rectangle(startPoint.x - bedWidth / 2, startPoint.y - bedHeight / 2, bedWidth, bedHeight);
-        // Calculate the bounding box of the rotated door
-        AffineTransform transform = new AffineTransform();
-        transform.rotate(Math.toRadians(rotationAngle), startPoint.x, startPoint.y);
-        Shape rotatedShape = transform.createTransformedShape(new Rectangle(startPoint.x - bedWidth / 2, startPoint.y - bedHeight / 2, bedWidth, bedHeight));
-        return rotatedShape.getBounds();
+    public Shape getBounds() {
+        // Calculate the coordinates of the corners of the unrotated rectangle
+        int x1 = -bedWidth / 2;
+        int y1 = -bedHeight / 2;
+        int x2 = bedWidth / 2;
+        int y2 = -bedHeight / 2;
+        int x3 = bedWidth / 2;
+        int y3 = bedHeight / 2;
+        int x4 = -bedWidth / 2;
+        int y4 = bedHeight / 2;
+
+        // Apply the rotation to each corner
+        double cosTheta = Math.cos(Math.toRadians(rotationAngle));
+        double sinTheta = Math.sin(Math.toRadians(rotationAngle));
+
+        int[] xPoints = {(int) (x1 * cosTheta - y1 * sinTheta), (int) (x2 * cosTheta - y2 * sinTheta),
+                (int) (x3 * cosTheta - y3 * sinTheta), (int) (x4 * cosTheta - y4 * sinTheta)};
+        int[] yPoints = {(int) (x1 * sinTheta + y1 * cosTheta), (int) (x2 * sinTheta + y2 * cosTheta),
+                (int) (x3 * sinTheta + y3 * cosTheta), (int) (x4 * sinTheta + y4 * cosTheta)};
+
+        // Create a polygon from the rotated corners
+        Polygon polygon = new Polygon(xPoints, yPoints, 4);
+
+        // Translate the polygon to the start point
+        polygon.translate(startPoint.x, startPoint.y);
+
+        return polygon;
     }
 
     @Override

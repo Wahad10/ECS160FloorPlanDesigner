@@ -58,8 +58,33 @@ public class Toilet implements DesignElement {
     }
 
     @Override
-    public Rectangle getBounds() {
-        return new Rectangle(startPoint.x - toiletRadiusX, startPoint.y - toiletRadiusY, 2 * toiletRadiusX, 2 * toiletRadiusY);
+    public Shape getBounds() {
+        // Calculate the coordinates of the corners of the unrotated rectangle
+        int x1 = -toiletRadiusX;
+        int y1 = -toiletRadiusY;
+        int x2 = toiletRadiusX + toiletRadiusX / 2;
+        int y2 = -toiletRadiusY;
+        int x3 = toiletRadiusX + toiletRadiusX / 2;
+        int y3 = toiletRadiusY;
+        int x4 = -toiletRadiusX;
+        int y4 = toiletRadiusY;
+
+        // Apply the rotation to each corner
+        double cosTheta = Math.cos(Math.toRadians(rotationAngle));
+        double sinTheta = Math.sin(Math.toRadians(rotationAngle));
+
+        int[] xPoints = {(int) (x1 * cosTheta - y1 * sinTheta), (int) (x2 * cosTheta - y2 * sinTheta),
+                (int) (x3 * cosTheta - y3 * sinTheta), (int) (x4 * cosTheta - y4 * sinTheta)};
+        int[] yPoints = {(int) (x1 * sinTheta + y1 * cosTheta), (int) (x2 * sinTheta + y2 * cosTheta),
+                (int) (x3 * sinTheta + y3 * cosTheta), (int) (x4 * sinTheta + y4 * cosTheta)};
+
+        // Create a polygon from the rotated corners
+        Polygon polygon = new Polygon(xPoints, yPoints, 4);
+
+        // Translate the polygon to the start point
+        polygon.translate(startPoint.x, startPoint.y);
+
+        return polygon;
     }
 
     @Override

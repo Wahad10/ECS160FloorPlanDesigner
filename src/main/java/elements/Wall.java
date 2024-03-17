@@ -9,7 +9,7 @@ import java.awt.geom.AffineTransform;
  * @author ChatGPT
  */
 public class Wall implements DesignElement{
-    private int DEFUALT_WALL_THICKNESS = 3;
+    private int DEFUALT_WALL_THICKNESS = 6;
     protected int wallThickness = DEFUALT_WALL_THICKNESS;
     private Point startPoint;
     private Point endPoint;
@@ -80,8 +80,14 @@ public class Wall implements DesignElement{
             }
             
         }
+        // Draw the bounding box
+        Shape bounds = getBounds();
+        g.setColor(Color.BLUE);
+        g.setStroke(new BasicStroke(2));
+        g.draw(bounds);
     }
 
+    /** 
     @Override
     public Rectangle getBounds() {
         if (startPoint == null || endPoint == null) {
@@ -107,6 +113,126 @@ public class Wall implements DesignElement{
     
         return new Rectangle(minX, minY, width, height);
     }
+    @Override
+public Shape getBounds() {
+    if (startPoint == null || endPoint == null) {
+        return new Rectangle();
+    }
+
+    // Calculate the angle of the line segment
+    double angle = Math.atan2(endPoint.y - startPoint.y, endPoint.x - startPoint.x);
+
+    // Calculate the rotated coordinates of the four corners of the unrotated bounding box
+    int[] xPoints = {startPoint.x, endPoint.x, endPoint.x, startPoint.x};
+    int[] yPoints = {startPoint.y - wallThickness/2, endPoint.y - wallThickness/2, endPoint.y + wallThickness/2, startPoint.y + wallThickness/2};
+
+    // Rotate the corners around the start point
+    int[] rotatedXPoints = new int[4];
+    int[] rotatedYPoints = new int[4];
+    for (int i = 0; i < 4; i++) {
+        rotatedXPoints[i] = startPoint.x + (int) ((xPoints[i] - startPoint.x) * Math.cos(angle) - (yPoints[i] - startPoint.y) * Math.sin(angle));
+        rotatedYPoints[i] = startPoint.y + (int) ((xPoints[i] - startPoint.x) * Math.sin(angle) + (yPoints[i] - startPoint.y) * Math.cos(angle));
+    }
+
+    // Create a polygon from the rotated corners
+    Polygon polygon = new Polygon(rotatedXPoints, rotatedYPoints, 4);
+
+    return polygon;
+}*/
+/* 
+@Override
+public Shape getBounds() {
+    if (startPoint == null || endPoint == null) {
+        return new Rectangle();
+    }
+
+    // Calculate the angle of rotation
+    double angle = Math.toRadians(rotationAngle);
+
+    // Calculate the half thickness of the wall
+    int halfThickness = wallThickness / 2;
+
+    // Calculate the unrotated coordinates of the four corners of the bounding box
+    int[] xPoints = {startPoint.x - halfThickness, endPoint.x + halfThickness, endPoint.x + halfThickness, startPoint.x - halfThickness};
+    int[] yPoints = {startPoint.y - halfThickness, endPoint.y - halfThickness, endPoint.y + halfThickness, startPoint.y + halfThickness};
+
+    // Rotate the corners around the start point
+    int[] rotatedXPoints = new int[4];
+    int[] rotatedYPoints = new int[4];
+    for (int i = 0; i < 4; i++) {
+        int dx = xPoints[i] - startPoint.x;
+        int dy = yPoints[i] - startPoint.y;
+        rotatedXPoints[i] = startPoint.x + (int) (dx * Math.cos(angle) - dy * Math.sin(angle));
+        rotatedYPoints[i] = startPoint.y + (int) (dx * Math.sin(angle) + dy * Math.cos(angle));
+    }
+
+    // Create a polygon from the rotated corners
+    Polygon polygon = new Polygon(rotatedXPoints, rotatedYPoints, 4);
+
+    return polygon;
+}*/
+@Override
+public Shape getBounds() {
+    if (startPoint == null || endPoint == null) {
+        return new Rectangle();
+    }
+
+    // Calculate the angle of rotation
+    double angle = Math.toRadians(rotationAngle);
+
+    // Calculate the half thickness of the wall
+    int halfThickness = wallThickness / 2;
+
+    // Calculate the unrotated coordinates of the four corners of the bounding box
+    int[] xPoints = {startPoint.x - halfThickness, endPoint.x + halfThickness, endPoint.x + halfThickness, startPoint.x - halfThickness};
+    if(startPoint.x > endPoint.x){
+        xPoints[0] = startPoint.x + halfThickness;
+        xPoints[1] = endPoint.x - halfThickness; 
+        xPoints[2] = endPoint.x - halfThickness; 
+        xPoints[3] = startPoint.x + halfThickness; 
+    }
+    if(startPoint.y < endPoint.y){
+        //xPoints[0] = startPoint.x - halfThickness;
+        xPoints[1] = startPoint.x - halfThickness; 
+        //xPoints[2] = endPoint.x + halfThickness; 
+        xPoints[3] = endPoint.x + halfThickness; 
+    }
+    if(startPoint.y > endPoint.y){
+        //xPoints[0] = startPoint.x - halfThickness;
+        xPoints[1] = startPoint.x - halfThickness; 
+        //xPoints[2] = endPoint.x + halfThickness; 
+        xPoints[3] = endPoint.x + halfThickness; 
+    }
+    int[] yPoints = {startPoint.y - halfThickness, endPoint.y - halfThickness, endPoint.y + halfThickness, startPoint.y + halfThickness};
+    if(startPoint.y < endPoint.y){
+        yPoints[1] = endPoint.y + halfThickness; 
+        yPoints[3] = startPoint.y - halfThickness; 
+    }
+    if(startPoint.y > endPoint.y){
+        yPoints[0] = startPoint.y + halfThickness; 
+        yPoints[1] = endPoint.y - halfThickness; 
+        yPoints[2] = endPoint.y - halfThickness; 
+        yPoints[3] = startPoint.y + halfThickness; 
+    }
+
+    // Rotate the corners around the start point
+    int[] rotatedXPoints = new int[4];
+    int[] rotatedYPoints = new int[4];
+    for (int i = 0; i < 4; i++) {
+        int dx = xPoints[i] - startPoint.x;
+        int dy = yPoints[i] - startPoint.y;
+        rotatedXPoints[i] = startPoint.x + (int) (dx * Math.cos(angle) - dy * Math.sin(angle));
+        rotatedYPoints[i] = startPoint.y + (int) (dx * Math.sin(angle) + dy * Math.cos(angle));
+    }
+
+    // Create a polygon from the rotated corners
+    Polygon polygon = new Polygon(rotatedXPoints, rotatedYPoints, 4);
+
+    return polygon;
+}
+
+
+
 
     @Override
 	public boolean isSelected() {
