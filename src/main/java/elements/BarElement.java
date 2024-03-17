@@ -26,13 +26,17 @@ public class BarElement extends JPanel {
 
     private void addElement(DesignElement element) {
         JButton button = new JButton(element.getClass().getSimpleName());
-        
+
         button.addActionListener(e -> {
             if (element instanceof Furniture) {
                 JPopupMenu menu = new JPopupMenu();
-                JMenuItem chairItem = new JMenuItem("Bed");
-                chairItem.addActionListener(ev -> {
+                JMenuItem bedItem = new JMenuItem("Bed");
+                bedItem.addActionListener(ev -> {
                     notifyObservers(new Bed());
+                });
+                JMenuItem sofaItem = new JMenuItem("Sofa");
+                sofaItem.addActionListener(ev -> {
+                    notifyObservers(new Sofa());
                 });
                 JMenuItem tableItem = new JMenuItem("Table");
                 tableItem.addActionListener(ev -> {
@@ -42,17 +46,39 @@ public class BarElement extends JPanel {
                 plantItem.addActionListener(ev -> {
                     notifyObservers(new Plant());
                 });
+                JMenuItem stoveItem = new JMenuItem("Stove");
+                stoveItem.addActionListener(ev -> {
+                    notifyObservers(new Stove());
+                });
+                JMenuItem toiletItem = new JMenuItem("Toilet");
+                toiletItem.addActionListener(ev -> {
+                    notifyObservers(new Toilet());
+                });
+                JMenuItem chairItem = new JMenuItem("Chair");
+                chairItem.addActionListener(ev -> {
+                    notifyObservers(new Chair());
+                });
+                JMenuItem deskItem = new JMenuItem("Desk");
+                deskItem.addActionListener(ev -> {
+                    notifyObservers(new Desk());
+                });
+
                 // Add more furniture items as needed
-    
+
+                menu.add(bedItem);
                 menu.add(chairItem);
-                menu.add(tableItem);
+                menu.add(sofaItem);
+                menu.add(bedItem);
+                menu.add(deskItem);
                 menu.add(plantItem);
+                menu.add(stoveItem);
+                menu.add(toiletItem);
                 // Add more furniture items to the menu
 
                 //int x = button.getLocationOnScreen().x - button.getWidth();
                 //int y = button.getLocationOnScreen().y + button.getHeight();
                 //menu.show(button, 0, y);
-    
+
                 menu.show(button, 0, 0);//button.getHeight());
             } else {
                 notifyObservers(element);
