@@ -51,18 +51,8 @@ public class Stove implements DesignElement {
 
         // Restore the old graphics transformation
         g.setTransform(oldTransform);
+    }
 
-        // Draw the bounding box
-        Shape bounds = getBounds();
-        g.setColor(Color.BLUE);
-        g.draw(bounds);
-    }
-/** 
-    @Override
-    public Rectangle getBounds() {
-        return new Rectangle(startPoint.x - stoveWidth / 2, startPoint.y - stoveHeight / 2, stoveWidth, stoveHeight);
-    }
- */   
     @Override
     public Shape getBounds() {
         // Calculate the coordinates of the corners of the unrotated rectangle
@@ -92,7 +82,6 @@ public class Stove implements DesignElement {
 
         return polygon;
     }
-
 
     @Override
     public boolean isSelected() {
