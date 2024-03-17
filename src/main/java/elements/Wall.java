@@ -9,7 +9,7 @@ import java.awt.geom.AffineTransform;
  * @author ChatGPT
  */
 public class Wall implements DesignElement{
-    private int DEFUALT_WALL_THICKNESS = 6;
+    private int DEFUALT_WALL_THICKNESS = 3;
     protected int wallThickness = DEFUALT_WALL_THICKNESS;
     private Point startPoint;
     private Point endPoint;
@@ -21,9 +21,11 @@ public class Wall implements DesignElement{
     }
     
     public void setStartPoint(Point startPoint) {
+        //First start point
         if(this.endPoint == null){
             this.startPoint = startPoint;
             this.endPoint = startPoint; // Reset end point to start point initially
+        //Moving the wall, adjust endpoint too
         }else{
             if(this.startPoint.x == this.endPoint.x){
                 int ydiff = this.endPoint.y - this.startPoint.y;
@@ -77,14 +79,8 @@ public class Wall implements DesignElement{
 
                 // Restore the old graphics transformation
                 g.setTransform(oldTransform);
-            }
-            
+            }  
         }
-        // Draw the bounding box
-        Shape bounds = getBounds();
-        g.setColor(Color.BLUE);
-        g.setStroke(new BasicStroke(2));
-        g.draw(bounds);
     }
 
     @Override
