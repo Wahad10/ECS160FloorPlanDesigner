@@ -30,7 +30,8 @@ public class App extends JFrame {
         setLayout(new BorderLayout());
 
         // Create and add the drawing panel to the center
-        drawingPanel = new DrawingPanel(1600, 900);
+        //drawingPanel = new DrawingPanel(1600, 900);
+        drawingPanel = new DrawingPanel(1200, 700);
         add(drawingPanel, BorderLayout.CENTER);
 
         // Create and add the toolbox to the east
