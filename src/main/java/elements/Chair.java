@@ -31,48 +31,35 @@ public class Chair implements DesignElement {
         }
         g.setStroke(new BasicStroke(2));
 
-        // Calculate center point of the chair
-        int centerX = startPoint.x + chairWidth / 2;
-        int centerY = startPoint.y + chairHeight / 2;
-
         // Save the current graphics transformation
         AffineTransform oldTransform = g.getTransform();
 
-        // Translate to the center point
-        g.translate(centerX, centerY);
-
-        // Rotate the graphics context
+        // Translate and rotate the graphics context to draw the stove at the desired position and angle
+        g.translate(startPoint.x, startPoint.y);
         g.rotate(Math.toRadians(rotationAngle));
-
-        // Translate back to the original position
-        g.translate(-centerX, -centerY);
 
         // Draw chair backrest
         int backrestWidth = chairWidth;
         int backrestHeight = chairHeight / 3;
-        g.drawRect(startPoint.x, startPoint.y, backrestWidth, backrestHeight);
+        g.drawRect(-chairWidth/2, -chairHeight/2, backrestWidth, backrestHeight);
 
         // Draw chair seat
         int seatWidth = chairWidth;
         int seatHeight = chairHeight / 5;
-        g.drawRect(startPoint.x, startPoint.y + backrestHeight, seatWidth, seatHeight);
+        g.drawRect(-chairWidth/2, -chairHeight/2 + backrestHeight, seatWidth, seatHeight);
 
         // Draw chair legs
         int legWidth = chairWidth / 10;
         int legHeight = chairHeight / 2;
-        g.drawRect(startPoint.x, startPoint.y + backrestHeight + seatHeight, legWidth, legHeight);
-        g.drawRect(startPoint.x + chairWidth - legWidth, startPoint.y + backrestHeight + seatHeight, legWidth, legHeight);
+        g.drawRect(-chairWidth/2, -chairHeight/2 + backrestHeight + seatHeight, legWidth, legHeight);
+        g.drawRect(-chairWidth/2 + chairWidth - legWidth, -chairHeight/2 + backrestHeight + seatHeight, legWidth, legHeight);
 
         // Restore the old graphics transformation
         g.setTransform(oldTransform);
     }
 
-    @Override
+     @Override
     public Shape getBounds() {
-        // Calculate the center of the chair
-        int centerX = startPoint.x + chairWidth / 2;
-        int centerY = startPoint.y + chairHeight / 2;
-
         // Calculate the coordinates of the corners of the unrotated rectangle
         int x1 = -chairWidth / 2;
         int y1 = -chairHeight / 2;
@@ -92,14 +79,11 @@ public class Chair implements DesignElement {
         int[] yPoints = {(int) (x1 * sinTheta + y1 * cosTheta), (int) (x2 * sinTheta + y2 * cosTheta),
                 (int) (x3 * sinTheta + y3 * cosTheta), (int) (x4 * sinTheta + y4 * cosTheta)};
 
-        // Translate the rotated points to the center of the chair
-        for (int i = 0; i < 4; i++) {
-            xPoints[i] += centerX;
-            yPoints[i] += centerY;
-        }
-
         // Create a polygon from the rotated corners
         Polygon polygon = new Polygon(xPoints, yPoints, 4);
+
+        // Translate the polygon to the start point
+        polygon.translate(startPoint.x, startPoint.y);
 
         return polygon;
     }

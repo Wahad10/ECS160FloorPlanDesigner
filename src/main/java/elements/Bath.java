@@ -31,24 +31,15 @@ public class Bath implements DesignElement {
         }
         g.setStroke(new BasicStroke(2));
 
-        // Calculate center point
-        int centerX = startPoint.x + bathWidth / 2;
-        int centerY = startPoint.y + bathHeight / 2;
-
         // Save the current graphics transformation
         AffineTransform oldTransform = g.getTransform();
 
-        // Translate to the center point
-        g.translate(centerX, centerY);
-
-        // Rotate the graphics context
+        // Translate and rotate the graphics context to draw the stove at the desired position and angle
+        g.translate(startPoint.x, startPoint.y);
         g.rotate(Math.toRadians(rotationAngle));
 
-        // Translate back to original position
-        g.translate(-centerX, -centerY);
-
         // Draw bath
-        g.drawRect(startPoint.x, startPoint.y, bathWidth, bathHeight);
+        g.drawRect(-bathWidth/2, -bathHeight/2, bathWidth, bathHeight);
 
         // Calculate tub dimensions
         int tubWidth = bathWidth - 15;
@@ -57,13 +48,13 @@ public class Bath implements DesignElement {
         int tubY = (bathHeight - tubHeight) / 2;
 
         // Draw tub
-        g.drawRect(startPoint.x + tubX, startPoint.y + tubY, tubWidth, tubHeight);
+        g.drawRect(-bathWidth/2 + tubX, -bathHeight/2 + tubY, tubWidth, tubHeight);
 
         // Draw drain (oblate circle)
         int drainSize = Math.min(bathWidth, bathHeight) / 8;
         int drainX = (bathWidth - drainSize) / 2;
         int drainY = (bathHeight - drainSize) / 6;
-        g.drawOval(startPoint.x + drainX, startPoint.y + drainY, drainSize, drainSize);
+        g.drawOval(-bathWidth/2 + drainX, -bathHeight/2 + drainY, drainSize, drainSize);
 
         // Restore the old graphics transformation
         g.setTransform(oldTransform);
@@ -71,10 +62,6 @@ public class Bath implements DesignElement {
 
     @Override
     public Shape getBounds() {
-        // Calculate the center of the bath
-        int centerX = startPoint.x + bathWidth / 2;
-        int centerY = startPoint.y + bathHeight / 2;
-
         // Calculate the coordinates of the corners of the unrotated rectangle
         int x1 = -bathWidth / 2;
         int y1 = -bathHeight / 2;
@@ -94,14 +81,11 @@ public class Bath implements DesignElement {
         int[] yPoints = {(int) (x1 * sinTheta + y1 * cosTheta), (int) (x2 * sinTheta + y2 * cosTheta),
                 (int) (x3 * sinTheta + y3 * cosTheta), (int) (x4 * sinTheta + y4 * cosTheta)};
 
-        // Translate the rotated points to the center of the chair
-        for (int i = 0; i < 4; i++) {
-            xPoints[i] += centerX;
-            yPoints[i] += centerY;
-        }
-
         // Create a polygon from the rotated corners
         Polygon polygon = new Polygon(xPoints, yPoints, 4);
+
+        // Translate the polygon to the start point
+        polygon.translate(startPoint.x, startPoint.y);
 
         return polygon;
     }

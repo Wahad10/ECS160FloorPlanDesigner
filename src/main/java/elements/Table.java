@@ -32,33 +32,24 @@ public class Table implements DesignElement {
             g.setColor(Color.DARK_GRAY);
         }
         g.setStroke(new BasicStroke(2));
-
+        
         // Save the current graphics transformation
         AffineTransform oldTransform = g.getTransform();
 
-        // Calculate the center point of the desk
-        int centerX = startPoint.x + tableWidth / 2;
-        int centerY = startPoint.y + tableHeight / 2;
-
-        // Translate to the center point
-        g.translate(centerX, centerY);
-
-        // Rotate the graphics context
+        // Translate and rotate the graphics context to draw the stove at the desired position and angle
+        g.translate(startPoint.x, startPoint.y);
         g.rotate(Math.toRadians(rotationAngle));
-
-        // Translate back to the original position
-        g.translate(-centerX, -centerY);
 
         // Draw desk top (circle)
         int diameter = Math.min(tableWidth, tableHeight);
-        g.drawOval(centerX - diameter/2, centerY - diameter/2, diameter, diameter);
+        g.drawOval(-diameter/2, -diameter/2, diameter, diameter);
 
         // Draw desk legs (four cardinal points)
         int legSize = legWidth;
-        g.drawRect(centerX - diameter/2 + tableWidth / 3 - legWidth, startPoint.y, legSize, legSize); // North leg
-        g.drawRect(centerX - diameter/2 + tableWidth / 3 - legWidth, startPoint.y + tableHeight - legSize, legSize, legSize); // South leg
-        g.drawRect(centerX - diameter/2, startPoint.y + tableHeight / 2 - legWidth, legSize, legSize); // West leg
-        g.drawRect(centerX - diameter/2 + tableWidth / 2 + legWidth, startPoint.y + tableHeight / 2 - legWidth, legSize, legSize); // East leg
+        g.drawRect(-diameter/2 + tableWidth / 3 - legWidth, -diameter/2, legSize, legSize); // North leg
+        g.drawRect(-diameter/2 + tableWidth / 3 - legWidth, -diameter/2 + tableHeight - legSize, legSize, legSize); // South leg
+        g.drawRect(-diameter/2, -diameter/2 + tableHeight / 2 - legWidth, legSize, legSize); // West leg
+        g.drawRect(-diameter/2 + tableWidth / 2 + legWidth, -diameter/2 + tableHeight / 2 - legWidth, legSize, legSize); // East leg
 
         // Restore the old graphics transformation
         g.setTransform(oldTransform);
@@ -66,15 +57,15 @@ public class Table implements DesignElement {
 
     @Override
     public Shape getBounds() {
-        // Calculate the center of the desk
-        int centerX = startPoint.x + tableWidth / 2;
-        int centerY = startPoint.y + tableHeight / 2;
+        // Calculate the diameter of the circle
+        int diameter = Math.min(tableWidth, tableHeight);
 
-        // Calculate the radius of the circle
-        int radius = Math.min(tableWidth, tableHeight) / 2;
+        // Calculate the center of the desk
+        int centerX = startPoint.x - diameter/2;
+        int centerY = startPoint.y - diameter/2;
 
         // Create a circle shape
-        return new java.awt.geom.Ellipse2D.Double(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
+        return new java.awt.geom.Ellipse2D.Double(centerX, centerY, diameter, diameter);
     }
 
     @Override

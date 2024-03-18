@@ -36,28 +36,19 @@ public class Desk implements DesignElement {
         // Save the current graphics transformation
         AffineTransform oldTransform = g.getTransform();
 
-        // Calculate the center point of the desk
-        int centerX = startPoint.x + deskWidth / 2;
-        int centerY = startPoint.y + deskHeight / 2;
-
-        // Translate to the center point
-        g.translate(centerX, centerY);
-
-        // Rotate the graphics context
+        // Translate and rotate the graphics context to draw the stove at the desired position and angle
+        g.translate(startPoint.x, startPoint.y);
         g.rotate(Math.toRadians(rotationAngle));
 
-        // Translate back to the original position
-        g.translate(-centerX, -centerY);
-
         // Draw desk top
-        g.drawRect(startPoint.x, startPoint.y, deskWidth, deskHeight);
+        g.drawRect(-deskWidth/2, -deskHeight/2, deskWidth, deskHeight);
 
         // Draw desk corners
         int cornerSize = legWidth * 2;
-        g.drawRect(startPoint.x, startPoint.y, cornerSize, cornerSize);
-        g.drawRect(startPoint.x + deskWidth - legWidth * 2, startPoint.y, cornerSize, cornerSize);
-        g.drawRect(startPoint.x, startPoint.y + deskHeight - legWidth * 2, cornerSize, cornerSize);
-        g.drawRect(startPoint.x + deskWidth - legWidth * 2, startPoint.y + deskHeight - legWidth * 2, cornerSize, cornerSize);
+        g.drawRect(-deskWidth/2, -deskHeight/2, cornerSize, cornerSize);
+        g.drawRect(-deskWidth/2 + deskWidth - legWidth * 2, -deskHeight/2, cornerSize, cornerSize);
+        g.drawRect(-deskWidth/2, -deskHeight/2 + deskHeight - legWidth * 2, cornerSize, cornerSize);
+        g.drawRect(-deskWidth/2 + deskWidth - legWidth * 2, -deskHeight/2 + deskHeight - legWidth * 2, cornerSize, cornerSize);
 
         // Restore the old graphics transformation
         g.setTransform(oldTransform);
@@ -65,10 +56,6 @@ public class Desk implements DesignElement {
 
     @Override
     public Shape getBounds() {
-        // Calculate the center of the chair
-        int centerX = startPoint.x + deskWidth / 2;
-        int centerY = startPoint.y + deskHeight / 2;
-
         // Calculate the coordinates of the corners of the unrotated rectangle
         int x1 = -deskWidth / 2;
         int y1 = -deskHeight / 2;
@@ -88,14 +75,11 @@ public class Desk implements DesignElement {
         int[] yPoints = {(int) (x1 * sinTheta + y1 * cosTheta), (int) (x2 * sinTheta + y2 * cosTheta),
                 (int) (x3 * sinTheta + y3 * cosTheta), (int) (x4 * sinTheta + y4 * cosTheta)};
 
-        // Translate the rotated points to the center of the chair
-        for (int i = 0; i < 4; i++) {
-            xPoints[i] += centerX;
-            yPoints[i] += centerY;
-        }
-
         // Create a polygon from the rotated corners
         Polygon polygon = new Polygon(xPoints, yPoints, 4);
+
+        // Translate the polygon to the start point
+        polygon.translate(startPoint.x, startPoint.y);
 
         return polygon;
     }

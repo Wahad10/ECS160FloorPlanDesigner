@@ -33,39 +33,25 @@ public class Sink implements DesignElement {
         }
         g.setStroke(new BasicStroke(2));
 
-         // Calculate center point
-         int centerX = startPoint.x + sinkWidth / 2;
-         int centerY = startPoint.y + sinkHeight / 2;
- 
-         // Save the current graphics transformation
-         AffineTransform oldTransform = g.getTransform();
- 
-         // Translate to the center point
-         g.translate(centerX, centerY);
- 
-         // Rotate the graphics context
-         g.rotate(Math.toRadians(rotationAngle));
- 
-         // Translate back to original position
-         g.translate(-centerX, -centerY);
+        // Save the current graphics transformation
+        AffineTransform oldTransform = g.getTransform();
+
+        // Translate and rotate the graphics context to draw the stove at the desired position and angle
+        g.translate(startPoint.x, startPoint.y);
+        g.rotate(Math.toRadians(rotationAngle));
 
         // Draw sink
-        g.drawRect(startPoint.x, startPoint.y, sinkWidth, sinkHeight);
+        g.drawRect(-sinkWidth/2, -sinkHeight/2, sinkWidth, sinkHeight);
 
         // Draw faucet
-        g.drawRect(startPoint.x + sinkWidth / 2 - faucetSize / 2, startPoint.y-faucetSize, faucetSize, faucetSize);
+        g.drawRect(-sinkWidth/2 + sinkWidth / 2 - faucetSize / 2, -sinkHeight/2-faucetSize, faucetSize, faucetSize);
 
         // Restore the old graphics transformation
-        g.setTransform(oldTransform);
+        g.setTransform(oldTransform); 
     }
-
 
     @Override
     public Shape getBounds() {
-        // Calculate the center of the bath
-        int centerX = startPoint.x + sinkWidth / 2;
-        int centerY = startPoint.y + sinkHeight / 2;
-
         // Calculate the coordinates of the corners of the unrotated rectangle
         int x1 = -sinkWidth / 2;
         int y1 = -sinkHeight / 2;
@@ -85,14 +71,11 @@ public class Sink implements DesignElement {
         int[] yPoints = {(int) (x1 * sinTheta + y1 * cosTheta), (int) (x2 * sinTheta + y2 * cosTheta),
                 (int) (x3 * sinTheta + y3 * cosTheta), (int) (x4 * sinTheta + y4 * cosTheta)};
 
-        // Translate the rotated points to the center of the chair
-        for (int i = 0; i < 4; i++) {
-            xPoints[i] += centerX;
-            yPoints[i] += centerY;
-        }
-
         // Create a polygon from the rotated corners
         Polygon polygon = new Polygon(xPoints, yPoints, 4);
+
+        // Translate the polygon to the start point
+        polygon.translate(startPoint.x, startPoint.y);
 
         return polygon;
     }
