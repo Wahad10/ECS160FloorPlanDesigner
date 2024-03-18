@@ -3,16 +3,15 @@ package elements;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
-/**
- * Class representing a table design element.
- *
- * @author Wahad Latif
- */
 public class Table implements DesignElement {
-    private static final int DEFAULT_TABLE_WIDTH = 80;
-    private static final int DEFAULT_TABLE_HEIGHT = 40;
-    private int tableWidth = DEFAULT_TABLE_WIDTH;
-    private int tableHeight = DEFAULT_TABLE_HEIGHT;
+    private static final int DEFAULT_TABLE_WIDTH = 100;
+    private static final int DEFAULT_TABLE_HEIGHT = 60;
+    private static final int DEFAULT_LEG_WIDTH = 5;
+
+    private int deskWidth = DEFAULT_TABLE_WIDTH;
+    private int deskHeight = DEFAULT_TABLE_HEIGHT;
+    private int legWidth = DEFAULT_LEG_WIDTH;
+
     private Point startPoint;
     private boolean isSelected = false;
     private int rotationAngle = 0;
@@ -27,72 +26,72 @@ public class Table implements DesignElement {
 
     @Override
     public void draw(Graphics2D g) {
-        if (isSelected == true) {
-    		g.setColor(Color.MAGENTA);
-    	} else {
-    		g.setColor(Color.YELLOW);
-    	}
-
+        if (isSelected) {
+            g.setColor(Color.MAGENTA);
+        } else {
+            g.setColor(Color.DARK_GRAY);
+        }
+        g.setStroke(new BasicStroke(2));
 
         // Save the current graphics transformation
         AffineTransform oldTransform = g.getTransform();
 
-        // Translate and rotate the graphics context to draw the bed at the desired position and angle
-        g.translate(startPoint.x, startPoint.y);
+        // Calculate the center point of the desk
+        int centerX = startPoint.x + deskWidth / 2;
+        int centerY = startPoint.y + deskHeight / 2;
+
+        // Translate to the center point
+        g.translate(centerX, centerY);
+
+        // Rotate the graphics context
         g.rotate(Math.toRadians(rotationAngle));
 
-        //Draw the table
-        g.fillRect( - tableWidth / 2, - tableHeight / 2, tableWidth, tableHeight);
+        // Translate back to the original position
+        g.translate(-centerX, -centerY);
+
+        // Draw desk top (circle)
+        int diameter = Math.min(deskWidth, deskHeight);
+        g.drawOval(startPoint.x, startPoint.y, diameter, diameter);
+
+        // Draw desk legs (four cardinal points)
+        int legSize = legWidth;
+        g.drawRect(startPoint.x + deskWidth / 3 - legWidth, startPoint.y, legSize, legSize); // North leg
+        g.drawRect(startPoint.x + deskWidth / 3 - legWidth, startPoint.y + deskHeight - legSize, legSize, legSize); // South leg
+        g.drawRect(startPoint.x, startPoint.y + deskHeight / 2 - legWidth, legSize, legSize); // West leg
+        g.drawRect(startPoint.x + deskWidth / 2 + legWidth, startPoint.y + deskHeight / 2 - legWidth, legSize, legSize); // East leg
 
         // Restore the old graphics transformation
         g.setTransform(oldTransform);
     }
 
-//COME BACK AND CHECK BOUNDS ONCE DRAW SOMETHING GOOD
     @Override
     public Shape getBounds() {
-        // Calculate the coordinates of the corners of the unrotated rectangle
-        int x1 = -tableWidth / 2;
-        int y1 = -tableHeight / 2;
-        int x2 = tableWidth / 2;
-        int y2 = -tableHeight / 2;
-        int x3 = tableWidth / 2;
-        int y3 = tableHeight / 2;
-        int x4 = -tableWidth / 2;
-        int y4 = tableHeight / 2;
+        // Calculate the center of the desk
+        int centerX = startPoint.x + deskWidth / 2;
+        int centerY = startPoint.y + deskHeight / 2;
 
-        // Apply the rotation to each corner
-        double cosTheta = Math.cos(Math.toRadians(rotationAngle));
-        double sinTheta = Math.sin(Math.toRadians(rotationAngle));
+        // Calculate the radius of the circle
+        int radius = Math.min(deskWidth, deskHeight) / 2;
 
-        int[] xPoints = {(int) (x1 * cosTheta - y1 * sinTheta), (int) (x2 * cosTheta - y2 * sinTheta),
-                (int) (x3 * cosTheta - y3 * sinTheta), (int) (x4 * cosTheta - y4 * sinTheta)};
-        int[] yPoints = {(int) (x1 * sinTheta + y1 * cosTheta), (int) (x2 * sinTheta + y2 * cosTheta),
-                (int) (x3 * sinTheta + y3 * cosTheta), (int) (x4 * sinTheta + y4 * cosTheta)};
-
-        // Create a polygon from the rotated corners
-        Polygon polygon = new Polygon(xPoints, yPoints, 4);
-
-        // Translate the polygon to the start point
-        polygon.translate(startPoint.x, startPoint.y);
-
-        return polygon;
+        // Create a circle shape
+        return new java.awt.geom.Ellipse2D.Double(centerX - radius, centerY - radius, 2 * radius, 2 * radius);
     }
 
     @Override
-	public boolean isSelected() {
-    	return isSelected;
+    public boolean isSelected() {
+        return isSelected;
     }
-    
+
     @Override
     public void setSelected(boolean selected) {
-    	isSelected = selected;
+        isSelected = selected;
     }
 
     @Override
     public void resize(double scale) {
-        tableWidth = (int) (scale * DEFAULT_TABLE_WIDTH);
-        tableHeight = (int) (scale * DEFAULT_TABLE_HEIGHT);
+        deskWidth = (int) (scale * DEFAULT_TABLE_WIDTH);
+        deskHeight = (int) (scale * DEFAULT_TABLE_HEIGHT);
+        legWidth = (int) (scale * DEFAULT_LEG_WIDTH);
     }
 
     @Override
@@ -100,3 +99,4 @@ public class Table implements DesignElement {
         rotationAngle = angle;
     }
 }
+

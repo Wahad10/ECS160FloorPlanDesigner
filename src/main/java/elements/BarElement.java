@@ -63,6 +63,30 @@ public class BarElement extends JPanel {
                 deskItem.addActionListener(ev -> {
                     notifyObservers(new Desk());
                 });
+                JMenuItem sinkItem = new JMenuItem("Sink");
+                sinkItem.addActionListener(ev -> {
+                    notifyObservers(new Sink());
+                });
+                JMenuItem counterItem = new JMenuItem("Counter");
+                counterItem.addActionListener(ev -> {
+                    notifyObservers(new Counter());
+                });
+                JMenuItem bathItem = new JMenuItem("Bath");
+                bathItem.addActionListener(ev -> {
+                    notifyObservers(new Bath());
+                });
+                JMenuItem lampItem = new JMenuItem("Lamp");
+                lampItem.addActionListener(ev -> {
+                    notifyObservers(new Lamp());
+                });
+                JMenuItem stairsItem = new JMenuItem("Stairs");
+                stairsItem.addActionListener(ev -> {
+                    notifyObservers(new Stairs());
+                });
+                JMenuItem storageItem = new JMenuItem("Storage");
+                storageItem.addActionListener(ev -> {
+                    notifyObservers(new Storage());
+                });
 
                 // Add more furniture items as needed
 
@@ -74,6 +98,13 @@ public class BarElement extends JPanel {
                 menu.add(stoveItem);
                 menu.add(toiletItem);
                 menu.add(tableItem);
+                menu.add(sinkItem);
+                menu.add(counterItem);
+                menu.add(bathItem);
+                menu.add(lampItem);
+                menu.add(stairsItem);
+                menu.add(storageItem);
+
                 // Add more furniture items to the menu
 
                 //int x = button.getLocationOnScreen().x - button.getWidth();
