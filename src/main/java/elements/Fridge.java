@@ -9,8 +9,8 @@ import java.awt.geom.AffineTransform;
  * @author Wahad Latif
  */
 public class Fridge implements DesignElement {
-    private static final int DEFAULT_FRIDGE_WIDTH = 60;
-    private static final int DEFAULT_FRIDGE_HEIGHT = 60;
+    private static final int DEFAULT_FRIDGE_WIDTH = 50;
+    private static final int DEFAULT_FRIDGE_HEIGHT = 50;
     private int fridgeWidth = DEFAULT_FRIDGE_WIDTH;
     private int fridgeHeight = DEFAULT_FRIDGE_HEIGHT;
     private Point startPoint;

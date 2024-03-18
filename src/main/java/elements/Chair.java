@@ -4,8 +4,8 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 
 public class Chair implements DesignElement {
-    private static final int DEFAULT_CHAIR_WIDTH = 50;
-    private static final int DEFAULT_CHAIR_HEIGHT = 50;
+    private static final int DEFAULT_CHAIR_WIDTH = 30;
+    private static final int DEFAULT_CHAIR_HEIGHT = 30;
 
     private int chairWidth = DEFAULT_CHAIR_WIDTH;
     private int chairHeight = DEFAULT_CHAIR_HEIGHT;

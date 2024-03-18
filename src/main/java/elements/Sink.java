@@ -4,8 +4,8 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 
 public class Sink implements DesignElement {
-    private static final int DEFAULT_SINK_WIDTH = 60;
-    private static final int DEFAULT_SINK_HEIGHT = 40;
+    private static final int DEFAULT_SINK_WIDTH = 45;
+    private static final int DEFAULT_SINK_HEIGHT = 25;
     private static final int DEFAULT_FAUCET_SIZE = 10;
 
     private int sinkWidth = DEFAULT_SINK_WIDTH;

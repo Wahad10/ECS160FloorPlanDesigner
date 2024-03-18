@@ -9,8 +9,8 @@ import java.awt.geom.AffineTransform;
  * @author Wahad Latif
  */
 public class Bed implements DesignElement {
-    private static final int DEFAULT_BED_WIDTH = 60;
-    private static final int DEFAULT_BED_HEIGHT = 120;
+    private static final int DEFAULT_BED_WIDTH = 40;
+    private static final int DEFAULT_BED_HEIGHT = 80;
     private int bedWidth = DEFAULT_BED_WIDTH;
     private int bedHeight = DEFAULT_BED_HEIGHT;
     private Point startPoint;

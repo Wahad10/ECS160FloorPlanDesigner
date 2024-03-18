@@ -4,8 +4,8 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 
 public class Desk implements DesignElement {
-    private static final int DEFAULT_DESK_WIDTH = 100;
-    private static final int DEFAULT_DESK_HEIGHT = 60;
+    private static final int DEFAULT_DESK_WIDTH = 60;
+    private static final int DEFAULT_DESK_HEIGHT = 40;
     private static final int DEFAULT_LEG_WIDTH = 5;
 
     private int deskWidth = DEFAULT_DESK_WIDTH;

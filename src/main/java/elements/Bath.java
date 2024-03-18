@@ -4,8 +4,8 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 
 public class Bath implements DesignElement {
-    private static final int DEFAULT_BATH_WIDTH = 80;
-    private static final int DEFAULT_BATH_HEIGHT = 150;
+    private static final int DEFAULT_BATH_WIDTH = 40;
+    private static final int DEFAULT_BATH_HEIGHT = 80;
 
     private int bathWidth = DEFAULT_BATH_WIDTH;
     private int bathHeight = DEFAULT_BATH_HEIGHT;
