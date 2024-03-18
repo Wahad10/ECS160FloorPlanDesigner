@@ -37,29 +37,70 @@ public class Lamp implements DesignElement {
         }
         g.setStroke(new BasicStroke(2));
 
+        // Calculate center point
+        int centerX = startPoint.x + baseWidth / 2;
+        int centerY = startPoint.y + (baseHeight + standLength + lampHeight) / 2;
+
         // Save the current graphics transformation
         AffineTransform oldTransform = g.getTransform();
 
-        // Translate and rotate the graphics context to draw the lamp at the desired position and angle
-        g.translate(startPoint.x, startPoint.y);
+        // Translate to the center point
+        g.translate(centerX, centerY);
+
+        // Rotate the graphics context
         g.rotate(Math.toRadians(rotationAngle));
 
+        // Translate back to original position
+        g.translate(-centerX, -centerY);
+
         // Draw lamp base
-        g.drawRect(-baseWidth / 2, 0, baseWidth, baseHeight);
+        g.drawRect(startPoint.x -baseWidth / 2, startPoint.y, baseWidth, baseHeight);
 
         // Draw lamp stand
-        g.drawLine(0, baseHeight, 0, baseHeight + standLength);
+        g.drawLine(startPoint.x , startPoint.y+ baseHeight, startPoint.x, startPoint.y + baseHeight + standLength);
 
         // Draw lamp shade
-        g.drawArc(-lampWidth / 2, baseHeight + standLength - lampHeight, lampWidth, lampHeight * 2, 0, 180);
+        g.drawArc(startPoint.x -lampWidth / 2, startPoint.y + baseHeight + standLength - lampHeight, lampWidth, lampHeight * 2, 0, 180);
 
         // Restore the old graphics transformation
         g.setTransform(oldTransform);
     }
 
     @Override
-    public Rectangle getBounds() {
-        return new Rectangle(startPoint.x - baseWidth / 2, startPoint.y, baseWidth, baseHeight + standLength + lampHeight);
+    public Shape getBounds() {
+        // Calculate center point
+        int centerX = startPoint.x + baseWidth / 2;
+        int centerY = startPoint.y + (baseHeight + standLength + lampHeight) / 2;
+
+        // Calculate the coordinates of the corners of the unrotated rectangle
+        int x1 = -baseWidth-baseWidth/2;
+        int y1 = -(baseHeight + standLength + lampHeight) / 2;
+        int x2 = baseWidth / 2;
+        int y2 = -(baseHeight + standLength + lampHeight) / 2;
+        int x3 = baseWidth / 2;
+        int y3 = (baseHeight + standLength) / 2;
+        int x4 = -baseWidth-baseWidth/2;
+        int y4 = (baseHeight + standLength) / 2;
+
+        // Apply the rotation to each corner
+        double cosTheta = Math.cos(Math.toRadians(rotationAngle));
+        double sinTheta = Math.sin(Math.toRadians(rotationAngle));
+
+        int[] xPoints = {(int) (x1 * cosTheta - y1 * sinTheta), (int) (x2 * cosTheta - y2 * sinTheta),
+                (int) (x3 * cosTheta - y3 * sinTheta), (int) (x4 * cosTheta - y4 * sinTheta)};
+        int[] yPoints = {(int) (x1 * sinTheta + y1 * cosTheta), (int) (x2 * sinTheta + y2 * cosTheta),
+                (int) (x3 * sinTheta + y3 * cosTheta), (int) (x4 * sinTheta + y4 * cosTheta)};
+
+        // Translate the rotated points to the center of the chair
+        for (int i = 0; i < 4; i++) {
+            xPoints[i] += centerX;
+            yPoints[i] += centerY;
+        }
+
+        // Create a polygon from the rotated corners
+        Polygon polygon = new Polygon(xPoints, yPoints, 4);
+
+        return polygon;
     }
 
     @Override

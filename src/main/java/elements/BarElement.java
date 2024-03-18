@@ -83,10 +83,6 @@ public class BarElement extends JPanel {
                 stairsItem.addActionListener(ev -> {
                     notifyObservers(new Stairs());
                 });
-                JMenuItem storageItem = new JMenuItem("Storage");
-                storageItem.addActionListener(ev -> {
-                    notifyObservers(new Storage());
-                });
 
                 // Add more furniture items as needed
 
@@ -103,7 +99,6 @@ public class BarElement extends JPanel {
                 menu.add(bathItem);
                 menu.add(lampItem);
                 menu.add(stairsItem);
-                menu.add(storageItem);
 
                 // Add more furniture items to the menu
 

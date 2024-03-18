@@ -3,18 +3,16 @@ package elements;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
+/**
+ * Class representing a chair design element.
+ *
+ * @author Wahad Latif
+ */
 public class Stairs implements DesignElement {
-    private static final int DEFAULT_STAIRS_WIDTH = 30;
-    private static final int DEFAULT_STAIRS_HEIGHT = 50;
-    private static final int DEFAULT_STEP_WIDTH = 5;
-    private static final int DEFAULT_STEP_HEIGHT = 10;
-    private static final int MORTAR_WIDTH = 1;
-
-    private int stairsWidth = DEFAULT_STAIRS_WIDTH;
-    private int stairsHeight = DEFAULT_STAIRS_HEIGHT;
-    private int stepWidth = DEFAULT_STEP_WIDTH;
-    private int stepHeight = DEFAULT_STEP_HEIGHT;
-
+    private static final int DEFAULT_STAIR_WIDTH = 60;
+    private static final int DEFAULT_STAIR_HEIGHT = 120;
+    private int stairWidth = DEFAULT_STAIR_WIDTH;
+    private int stairHeight = DEFAULT_STAIR_HEIGHT;
     private Point startPoint;
     private boolean isSelected = false;
     private int rotationAngle = 0;
@@ -29,64 +27,83 @@ public class Stairs implements DesignElement {
 
     @Override
     public void draw(Graphics2D g) {
-        if (isSelected) {
-            g.setColor(Color.MAGENTA);
-        } else {
-            g.setColor(Color.GRAY);
-        }
+        if (isSelected == true) {
+    		g.setColor(Color.MAGENTA);
+    	} else {
+    		g.setColor(Color.GRAY);
+    	}
+        //g.fillRect(startPoint.x - bedWidth / 2, startPoint.y - bedHeight / 2, bedWidth, bedHeight);
         g.setStroke(new BasicStroke(2));
 
+
+        int x = - stairWidth / 2;
+        int y = - stairHeight / 2;
+    
         // Save the current graphics transformation
         AffineTransform oldTransform = g.getTransform();
-
-        // Translate and rotate the graphics context to draw the stairs at the desired position and angle
+    
+        // Translate and rotate the graphics context to draw the bed at the desired position and angle
         g.translate(startPoint.x, startPoint.y);
         g.rotate(Math.toRadians(rotationAngle));
+    
+        // Draw the frame
+        g.drawRect(x, y, stairWidth, stairHeight);
 
-        // Draw masonry stairs
-        drawSteps(g);
-
+        int numSteps = stairHeight/12;
+        int stepHeight = stairHeight/numSteps;
+        for(int i = 0; i < stairHeight; i+=stepHeight){
+            // Draw the steps
+            g.drawRect(x, y, stairWidth, i);
+        }
+    
         // Restore the old graphics transformation
         g.setTransform(oldTransform);
     }
 
-    private void drawSteps(Graphics2D g) {
-        // Draw steps and mortar joints
-        int numStepsX = stairsWidth / (stepWidth + MORTAR_WIDTH);
-        int numStepsY = stairsHeight / (stepHeight + MORTAR_WIDTH);
+    @Override
+    public Shape getBounds() {
+        // Calculate the coordinates of the corners of the unrotated rectangle
+        int x1 = -stairWidth / 2;
+        int y1 = -stairHeight / 2;
+        int x2 = stairWidth / 2;
+        int y2 = -stairHeight / 2;
+        int x3 = stairWidth / 2;
+        int y3 = stairHeight / 2;
+        int x4 = -stairWidth / 2;
+        int y4 = stairHeight / 2;
 
-        int startX = -stairsWidth / 2;
-        int startY = -stairsHeight;
-        for (int i = 0; i < numStepsY; i++) {
-            for (int j = 0; j < numStepsX * 2 + 1; j++) {
-                int stepX = startX + j * (stepWidth + MORTAR_WIDTH);
-                int stepY = startY + i * (stepHeight + MORTAR_WIDTH);
-                g.fillRect(stepX, stepY, stepWidth, stepHeight);
-            }
-        }
+        // Apply the rotation to each corner
+        double cosTheta = Math.cos(Math.toRadians(rotationAngle));
+        double sinTheta = Math.sin(Math.toRadians(rotationAngle));
+
+        int[] xPoints = {(int) (x1 * cosTheta - y1 * sinTheta), (int) (x2 * cosTheta - y2 * sinTheta),
+                (int) (x3 * cosTheta - y3 * sinTheta), (int) (x4 * cosTheta - y4 * sinTheta)};
+        int[] yPoints = {(int) (x1 * sinTheta + y1 * cosTheta), (int) (x2 * sinTheta + y2 * cosTheta),
+                (int) (x3 * sinTheta + y3 * cosTheta), (int) (x4 * sinTheta + y4 * cosTheta)};
+
+        // Create a polygon from the rotated corners
+        Polygon polygon = new Polygon(xPoints, yPoints, 4);
+
+        // Translate the polygon to the start point
+        polygon.translate(startPoint.x, startPoint.y);
+
+        return polygon;
     }
 
     @Override
-    public Rectangle getBounds() {
-        return new Rectangle(startPoint.x - stairsWidth / 2, startPoint.y - stairsHeight, stairsWidth, stairsHeight);
+	public boolean isSelected() {
+    	return isSelected;
     }
-
-    @Override
-    public boolean isSelected() {
-        return isSelected;
-    }
-
+    
     @Override
     public void setSelected(boolean selected) {
-        isSelected = selected;
+    	isSelected = selected;
     }
 
     @Override
     public void resize(double scale) {
-        stairsWidth = (int) (scale * DEFAULT_STAIRS_WIDTH);
-        stairsHeight = (int) (scale * DEFAULT_STAIRS_HEIGHT);
-        stepWidth = (int) (scale * DEFAULT_STEP_WIDTH);
-        stepHeight = (int) (scale * DEFAULT_STEP_HEIGHT);
+        stairWidth = (int) (scale * DEFAULT_STAIR_WIDTH);
+        stairHeight = (int) (scale * DEFAULT_STAIR_HEIGHT);
     }
 
     @Override
