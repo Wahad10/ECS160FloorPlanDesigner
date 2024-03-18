@@ -17,7 +17,7 @@ public class BarElement extends JPanel {
     private List<ElementSelectedObserver> observers = new ArrayList<>();
 
     public BarElement() {
-        setLayout(new GridLayout(6, 3));
+        setLayout(new GridLayout(9, 2));
         addElement(new Wall());
         addElement(new DoorRight());
         addElement(new DoorLeft());
@@ -27,6 +27,7 @@ public class BarElement extends JPanel {
         addElement(new Chair());
         addElement(new Counter());
         addElement(new Desk());
+        addElement(new Fridge());
         addElement(new Lamp());
         addElement(new Plant());
         addElement(new Sink());
@@ -38,7 +39,20 @@ public class BarElement extends JPanel {
     }
 
     private void addElement(DesignElement element) {
-        JButton button = new JButton(element.getClass().getSimpleName());
+        String buttonName = element.getClass().getSimpleName();
+        if(buttonName.equals("DoorRight")){
+            buttonName = "<html>Door<br />Right</html>";
+        }
+        if(buttonName.equals("DoorLeft")){
+            buttonName = "<html>Door<br />Left</html>";
+        }
+        JButton button = new JButton(buttonName);
+
+        // Set a preferred size for the button
+        button.setPreferredSize(new Dimension(60, 40)); // Adjust the dimensions as needed
+
+        // Set a margin to provide padding around the text
+        button.setMargin(new Insets(3, 3, 3, 3)); // Adjust the insets as needed
 
         button.addActionListener(e -> {
             notifyObservers(element);
