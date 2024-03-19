@@ -21,7 +21,28 @@ public class BarFunction extends JPanel {
     }
 
     public void addFunction(ManipulationFunction function) {
-        JButton button = new JButton(function.getClass().getSimpleName());
+        String buttonName;
+        switch (function.getClass().getSimpleName()) {
+            case "Select":
+                buttonName = "Select   (S)";
+                break;
+            case "Move":
+                buttonName = "Move   (M)";
+                break;
+            case "Remove":
+                buttonName = "Remove   (R)";
+                break;
+            case "Resize":
+                buttonName = "Resize   (Z)";
+                break;
+            case "Rotate":
+                buttonName = "Rotate   (T)";
+                break;
+            default:
+                buttonName = "Unknown";
+                break;
+        }
+        JButton button = new JButton(buttonName);
         button.addActionListener(e -> notifyObservers(function));
         add(button);
     }

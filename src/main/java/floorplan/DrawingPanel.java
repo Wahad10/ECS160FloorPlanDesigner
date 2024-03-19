@@ -177,6 +177,14 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
                 if (e.getKeyCode() == KeyEvent.VK_Z) {
                     onFunctionSelected(resizeSlider);
                 }
+
+                if (e.getKeyCode() == KeyEvent.VK_S && e.isControlDown()) {
+                    saveImage();
+                }
+
+                if (e.getKeyCode() == KeyEvent.VK_O && e.isControlDown()) {
+                    loadImage();
+                }
             }
 
             @Override
@@ -250,9 +258,7 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
 
         // Request focus for the panel
         requestFocusInWindow();
-    }
-
-    
+    } 
 
     @Override
     public void onFunctionSelected(ManipulationFunction function) {

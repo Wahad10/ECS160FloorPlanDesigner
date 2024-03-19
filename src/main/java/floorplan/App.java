@@ -56,6 +56,9 @@ public class App extends JFrame {
         pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+
+        //last thing we do is set the panel to be focused for keyboard shortcuts
+        drawingPanel.requestFocusInWindow();
     }
 
     private void setupMenuBar() {
@@ -71,17 +74,17 @@ public class App extends JFrame {
     private JMenu createFileMenu() {
         JMenu fileMenu = new JMenu("File");
         
-        JMenuItem saveItem = new JMenuItem("Save");
+        JMenuItem saveItem = new JMenuItem("Save   (Ctrl+S)");
         saveItem.addActionListener(e -> drawingPanel.saveImage());
         fileMenu.add(saveItem);
 
-        JMenuItem loadItem = new JMenuItem("Load");
+        JMenuItem loadItem = new JMenuItem("Load   (Ctrl+O)");
         loadItem.addActionListener(e -> drawingPanel.loadImage());
         fileMenu.add(loadItem);
 
         fileMenu.add(new JSeparator());
 
-        JMenuItem exitItem = new JMenuItem("Exit");
+        JMenuItem exitItem = new JMenuItem("Exit     (Alt+F4)");
         exitItem.addActionListener(e -> System.exit(0));
         fileMenu.add(exitItem);
         
