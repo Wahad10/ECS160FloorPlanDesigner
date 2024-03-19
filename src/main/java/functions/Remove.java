@@ -17,10 +17,7 @@ public class Remove implements ManipulationFunction {
     }
 
     @Override
-    public void performFunction(Point clickedPoint) {
-        // Handle the null points gracefully (throw an exception, log a message, etc.)
-        if (clickedPoint == null) {return;}
-
+    public void performFunction(Point point) {
         // Perform move logic for the element
         if (selectFunction.selectedElements != null) {
             //Removing it

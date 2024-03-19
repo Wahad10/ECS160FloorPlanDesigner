@@ -26,11 +26,10 @@ public class Rotate extends JSlider implements ManipulationFunction {
     }
 
     @Override
-    public void performFunction(Point clickedPoint) {
+    public void performFunction(Point point) {
         int rotateFactor = getValue(); // Rotate factor from 0 to 360
-        // Resize the selected design element
+        // Rotate the selected design element
         if (selectFunction.selectedElements != null) {
-            //selectFunction.selectedElements.rotate(rotateFactor);
             for (DesignElement element : selectFunction.selectedElements) {
                 element.rotate(rotateFactor);
             }

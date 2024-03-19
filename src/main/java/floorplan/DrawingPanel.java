@@ -58,30 +58,22 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
 
         addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                lastPoint = e.getPoint();
-            	System.out.print(designElements.size());
-                //select and any other functions too (polymorphism)
-                if (currentFunction != null && SwingUtilities.isLeftMouseButton(e) && !(currentFunction instanceof Move)) {
-                    currentFunction.performFunction(lastPoint);
-                }
-            }
-
-            @Override
             public void mousePressed(MouseEvent e) {
                 // Return if it wasn't the left mouse button
                 if (e.getButton() != MouseEvent.BUTTON1) {return;}
 
+                lastPoint = e.getPoint();
+                
+                //Functions
                 if(currentFunction instanceof Select){
-                    selectFunction.startPoint = e.getPoint();
+                    selectFunction.startPoint = lastPoint;
                     selectFunction.endPoint = selectFunction.startPoint;
-                    selectFunction.selectedElements.clear();
                 }
                 if(currentFunction instanceof Move){
-                    moveFunction.startDragPoint = e.getPoint();
+                    moveFunction.startDragPoint = lastPoint;
                 }
 
-                lastPoint = e.getPoint();
+                //Elements
                 //Wall will only be drawn once mouse is released later
                 if (currentElement instanceof Wall) {
                     Wall newWall = new Wall();
@@ -108,19 +100,20 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
                 // Return if it wasn't the left mouse button
                 if (e.getButton() != MouseEvent.BUTTON1) {return;}
 
+                lastPoint = e.getPoint();
+                
+                //Functions
                 if(currentFunction instanceof Select){
                     selectFunction.startPoint = null;
                     selectFunction.endPoint = null;
                     repaint();
                 }
-
                 if(currentFunction instanceof Move){
-                    //selectFunction.clearSelection();
                     moveFunction.startDragPoint = null;
                     repaint();
                 }
-                
-                lastPoint = e.getPoint();
+
+                //Elements
                 if (currentElement instanceof Wall && currentFunction == null) {
                     ((Wall)currentElement).setEndPoint(lastPoint);
                     repaint();
@@ -135,18 +128,15 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
                 // Return if it wasn't the left mouse button
                 if (!SwingUtilities.isLeftMouseButton(e)) {return;}
 
-                if(currentFunction instanceof Select){
-                    selectFunction.endPoint = e.getPoint();
-                    //selectFunction.draw();
-                    selectFunction.selectElements();
+                lastPoint = e.getPoint();
+
+                //Functions
+                if(currentFunction instanceof Select || currentFunction instanceof Move){
+                    currentFunction.performFunction(lastPoint);
                     repaint();
                 }
 
-                if (currentFunction instanceof Move) {
-                    moveFunction.performBetterFunction(e.getPoint());
-                }
-                
-                lastPoint = e.getPoint();
+                //Elements
                 if (currentElement instanceof Wall && currentFunction == null) {
                     ((Wall)currentElement).setEndPoint(lastPoint);
                     repaint();

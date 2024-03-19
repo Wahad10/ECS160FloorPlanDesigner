@@ -44,11 +44,10 @@ public class Resize extends JSlider implements ManipulationFunction {
     }
 
     @Override
-    public void performFunction(Point clickedPoint) {
+    public void performFunction(Point point) {
         double scaleFactor = (double) getValue() / 100; // Scale factor from 0.0 to 10.0
         // Resize the selected design element
         if (selectFunction.selectedElements != null) {
-            //selectFunction.selectedElements.resize(scaleFactor);
             for (DesignElement element : selectFunction.selectedElements) {
                 element.resize(scaleFactor);
             }
