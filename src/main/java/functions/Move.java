@@ -2,6 +2,7 @@ package functions;
 
 import java.awt.*;
 
+import elements.DesignElement;
 import floorplan.*;
 //import elements.*;
 
@@ -20,9 +21,12 @@ public class Move implements ManipulationFunction {
         if (clickedPoint == null) {return;}
 
         // Perform move logic for the element
-        if (selectFunction.selectedElement != null) {
+        if (selectFunction.selectedElements != null) {
             //Get user input of new point to move to (moving to clicked point)
-            selectFunction.selectedElement.setStartPoint(clickedPoint);
+            ///selectFunction.selectedElements.setStartPoint(clickedPoint);
+            for (DesignElement element : selectFunction.selectedElements) {
+                element.setStartPoint(clickedPoint);
+            }
 
             selectFunction.clearSelection();
         }

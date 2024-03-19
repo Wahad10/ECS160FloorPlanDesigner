@@ -2,6 +2,9 @@ package functions;
 
 import java.awt.*;
 import javax.swing.*;
+
+import elements.DesignElement;
+
 import java.util.Hashtable;
 
 import floorplan.*;
@@ -44,8 +47,11 @@ public class Resize extends JSlider implements ManipulationFunction {
     public void performFunction(Point clickedPoint) {
         double scaleFactor = (double) getValue() / 100; // Scale factor from 0.0 to 10.0
         // Resize the selected design element
-        if (selectFunction.selectedElement != null) {
-            selectFunction.selectedElement.resize(scaleFactor);
+        if (selectFunction.selectedElements != null) {
+            //selectFunction.selectedElements.resize(scaleFactor);
+            for (DesignElement element : selectFunction.selectedElements) {
+                element.resize(scaleFactor);
+            }
             drawingPanel.repaint();
         }
     }

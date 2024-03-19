@@ -22,7 +22,7 @@ public class Remove implements ManipulationFunction {
         if (clickedPoint == null) {return;}
 
         // Perform move logic for the element
-        if (selectFunction.selectedElement != null) {
+        if (selectFunction.selectedElements != null) {
             //Removing it
             List<DesignElement> elements = drawingPanel.getDesignElements();
             Iterator<DesignElement> iterator = elements.iterator();

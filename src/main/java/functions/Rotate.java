@@ -3,6 +3,7 @@ package functions;
 import java.awt.*;
 import javax.swing.*;
 
+import elements.DesignElement;
 import floorplan.*;
 
 public class Rotate extends JSlider implements ManipulationFunction {
@@ -28,8 +29,11 @@ public class Rotate extends JSlider implements ManipulationFunction {
     public void performFunction(Point clickedPoint) {
         int rotateFactor = getValue(); // Rotate factor from 0 to 360
         // Resize the selected design element
-        if (selectFunction.selectedElement != null) {
-            selectFunction.selectedElement.rotate(rotateFactor);
+        if (selectFunction.selectedElements != null) {
+            //selectFunction.selectedElements.rotate(rotateFactor);
+            for (DesignElement element : selectFunction.selectedElements) {
+                element.rotate(rotateFactor);
+            }
             drawingPanel.repaint();
         }
     }

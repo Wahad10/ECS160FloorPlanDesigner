@@ -41,6 +41,7 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
         canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         clearCanvas();
         setPreferredSize(new Dimension(width, height));
+        setFocusable(true); // Enable focus for the panel
 
         designElements = new ArrayList<>();
 
@@ -59,6 +60,12 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
             public void mousePressed(MouseEvent e) {
                 // Return if it wasn't the left mouse button
                 if (e.getButton() != MouseEvent.BUTTON1) {return;}
+
+                if(currentFunction instanceof Select){
+                    selectFunction.startPoint = e.getPoint();
+                    selectFunction.endPoint = selectFunction.startPoint;
+                    selectFunction.selectedElements.clear();
+                }
 
                 lastPoint = e.getPoint();
                 //Wall will only be drawn once mouse is released later
@@ -86,8 +93,17 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
             public void mouseReleased(MouseEvent e) {
                 // Return if it wasn't the left mouse button
                 if (e.getButton() != MouseEvent.BUTTON1) {return;}
-                lastPoint = e.getPoint();
 
+                if(currentFunction instanceof Select){
+                    //selectFunction.endPoint = e.getPoint();
+                    //selectFunction.draw();
+                    //selectFunction.selectElements();
+                    selectFunction.startPoint = null;
+                    selectFunction.endPoint = null;
+                    repaint();
+                }
+                
+                lastPoint = e.getPoint();
                 if (currentElement instanceof Wall && currentFunction == null) {
                     ((Wall)currentElement).setEndPoint(lastPoint);
                     repaint();
@@ -101,13 +117,36 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
             public void mouseDragged(MouseEvent e) {
                 // Return if it wasn't the left mouse button
                 if (!SwingUtilities.isLeftMouseButton(e)) {return;}
-                lastPoint = e.getPoint();
 
+                if(currentFunction instanceof Select){
+                    selectFunction.endPoint = e.getPoint();
+                    //selectFunction.draw();
+                    selectFunction.selectElements();
+                    repaint();
+                }
+                
+                lastPoint = e.getPoint();
                 if (currentElement instanceof Wall && currentFunction == null) {
                     ((Wall)currentElement).setEndPoint(lastPoint);
                     repaint();
                 }
             }
+        });
+
+        addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {}
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    System.out.println("Escape key pressed");
+                    if(selectFunction != null){selectFunction.clearSelection();}
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {}
         });
 
         // Add component listener to handle resizing
@@ -152,6 +191,12 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
             System.out.println(element);
             element.draw(g2d);
         }
+
+        //also draw selection rectangle if needed
+        if(currentFunction instanceof Select){
+            selectFunction.draw(g2d);
+        }
+
         g2d.dispose();
     }
 
@@ -165,6 +210,9 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
         currentFunction = null;
 
         //should i hide resizeslider?
+
+        // Request focus for the panel
+        requestFocusInWindow();
     }
 
     @Override
@@ -222,6 +270,9 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
         if(!(currentFunction instanceof Rotate) && rotateSlider != null){
             rotateSlider.setVisible(false);
         }
+
+        // Request focus for the panel
+        requestFocusInWindow();
     }
 
     private void resizeCanvas(int width, int height) {
@@ -252,7 +303,7 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
 
     public void saveImage() {
         //clear selections before saving
-        selectFunction.clearSelection();
+        if(selectFunction != null){selectFunction.clearSelection();}
 
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Save Image");
