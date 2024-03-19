@@ -78,7 +78,6 @@ public class Select implements ManipulationFunction {
             if (!element.getBounds().intersects(selectionRect)) {
                 //WHY THIS NOT WORK?? selectedElements.remove(element);
                 elementsToRemove.add(element);
-                System.out.println("removed sleection");
                 element.setSelected(false);
             }
         }
@@ -87,22 +86,6 @@ public class Select implements ManipulationFunction {
         selectedElements.removeAll(elementsToRemove);
     }
 
-    /**public void clearSelection() {
-        if (selectedElement != null) {
-            selectedElement.setSelected(false);
-            selectedElement = null;
-            drawingPanel.repaint();
-        }
-    }*/
-    public void clearSelection() {
-        for (DesignElement element : selectedElements) {
-            element.setSelected(false);
-        }
-        selectedElements.clear();
-        drawingPanel.repaint();
-    }
-
-    //@Override
     public void draw(Graphics2D g) {
         if (startPoint != null && endPoint != null) {
             g.setColor(new Color(0, 0, 255, 100)); // Transparent blue
@@ -112,5 +95,13 @@ public class Select implements ManipulationFunction {
             int height = Math.abs(startPoint.y - endPoint.y);
             g.fill(new Rectangle(x, y, width, height));
         }
+    }
+
+    public void clearSelection() {
+        for (DesignElement element : selectedElements) {
+            element.setSelected(false);
+        }
+        selectedElements.clear();
+        drawingPanel.repaint();
     }
 }

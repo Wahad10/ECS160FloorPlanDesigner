@@ -36,5 +36,7 @@ public class Rotate extends JSlider implements ManipulationFunction {
             }
             drawingPanel.repaint();
         }
+
+        drawingPanel.requestFocusInWindow();
     }
 }

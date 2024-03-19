@@ -14,7 +14,7 @@ import functions.BarFunction;
  */
 public class App extends JFrame {
     private DrawingPanel drawingPanel;
-    private BarElement toolbox;
+    private BarElement elementbox;
     private BarFunction functionbox;
 
     public App() {
@@ -36,14 +36,20 @@ public class App extends JFrame {
         add(drawingPanel, BorderLayout.CENTER);
 
         // Create and add the toolbox to the east
-        toolbox = new BarElement();
-        add(toolbox, BorderLayout.EAST);
-        toolbox.addObserver(drawingPanel);
-
+        elementbox = new BarElement();
+        add(elementbox, BorderLayout.EAST);
+        elementbox.addObserver(drawingPanel);
+        
         // Create and add the functionbox to the north
-        functionbox = new BarFunction(drawingPanel);
+        functionbox = new BarFunction();
         add(functionbox, BorderLayout.NORTH);
         functionbox.addObserver(drawingPanel);
+        //add functions to functionbox
+        functionbox.addFunction(drawingPanel.getSelect());
+        functionbox.addFunction(drawingPanel.getMove());
+        functionbox.addFunction(drawingPanel.getRemove());
+        functionbox.addFunction(drawingPanel.getResize());
+        functionbox.addFunction(drawingPanel.getRotate());
 
         setupMenuBar();
 
@@ -63,23 +69,23 @@ public class App extends JFrame {
     }
 
     private JMenu createFileMenu() {
-    	  JMenu fileMenu = new JMenu("File");
-    	  
-          JMenuItem saveItem = new JMenuItem("Save");
-          saveItem.addActionListener(e -> drawingPanel.saveImage());
-          fileMenu.add(saveItem);
+        JMenu fileMenu = new JMenu("File");
+        
+        JMenuItem saveItem = new JMenuItem("Save");
+        saveItem.addActionListener(e -> drawingPanel.saveImage());
+        fileMenu.add(saveItem);
 
-          JMenuItem loadItem = new JMenuItem("Load");
-          loadItem.addActionListener(e -> drawingPanel.loadImage());
-          fileMenu.add(loadItem);
+        JMenuItem loadItem = new JMenuItem("Load");
+        loadItem.addActionListener(e -> drawingPanel.loadImage());
+        fileMenu.add(loadItem);
 
-          fileMenu.add(new JSeparator());
+        fileMenu.add(new JSeparator());
 
-          JMenuItem exitItem = new JMenuItem("Exit");
-          exitItem.addActionListener(e -> System.exit(0));
-          fileMenu.add(exitItem);
-          
-          return fileMenu;
+        JMenuItem exitItem = new JMenuItem("Exit");
+        exitItem.addActionListener(e -> System.exit(0));
+        fileMenu.add(exitItem);
+        
+        return fileMenu;
     }
 
     private JMenu createEditMenu() {

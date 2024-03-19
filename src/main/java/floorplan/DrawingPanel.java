@@ -30,13 +30,17 @@ import functions.*;
 public class DrawingPanel extends JPanel implements ElementSelectedObserver, FunctionSelectedObserver {
     private BufferedImage canvas;
     private Point lastPoint;
+
     private List<DesignElement> designElements;
     private DesignElement currentElement;
-    private ManipulationFunction currentFunction;
+
     private Select selectFunction;
     private Move moveFunction;
+    private Remove removeFunction;
     private Resize resizeSlider;
     private Rotate rotateSlider;
+    private ManipulationFunction currentFunction;
+
 
     public DrawingPanel(int width, int height) {
         canvas = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
@@ -45,6 +49,12 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
         setFocusable(true); // Enable focus for the panel
 
         designElements = new ArrayList<>();
+
+        selectFunction = new Select(this);
+        moveFunction = new Move(this, selectFunction);
+        removeFunction = new Remove(this, selectFunction);
+        resizeSlider = new Resize(this, selectFunction);
+        rotateSlider = new Rotate(this, selectFunction);
 
         addMouseListener(new MouseAdapter() {
             @Override
@@ -99,16 +109,13 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
                 if (e.getButton() != MouseEvent.BUTTON1) {return;}
 
                 if(currentFunction instanceof Select){
-                    //selectFunction.endPoint = e.getPoint();
-                    //selectFunction.draw();
-                    //selectFunction.selectElements();
                     selectFunction.startPoint = null;
                     selectFunction.endPoint = null;
                     repaint();
                 }
 
                 if(currentFunction instanceof Move){
-                    selectFunction.clearSelection();
+                    //selectFunction.clearSelection();
                     moveFunction.startDragPoint = null;
                     repaint();
                 }
@@ -155,7 +162,30 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
                     System.out.println("Escape key pressed");
-                    if(selectFunction != null){selectFunction.clearSelection();}
+                    selectFunction.clearSelection();
+                    //repaint();
+                    resizeSlider.setVisible(false);
+                    rotateSlider.setVisible(false);
+                }
+
+                if (e.getKeyCode() == KeyEvent.VK_S) {
+                    onFunctionSelected(selectFunction);
+                }
+
+                if (e.getKeyCode() == KeyEvent.VK_M) {
+                    onFunctionSelected(moveFunction);
+                }
+
+                if (e.getKeyCode() == KeyEvent.VK_R) {
+                    onFunctionSelected(removeFunction);
+                }
+
+                if (e.getKeyCode() == KeyEvent.VK_T) {
+                    onFunctionSelected(rotateSlider);
+                }
+
+                if (e.getKeyCode() == KeyEvent.VK_Z) {
+                    onFunctionSelected(resizeSlider);
                 }
             }
 
@@ -223,20 +253,21 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
         currentElement = element;
         currentFunction = null;
 
+        selectFunction.clearSelection();
         //should i hide resizeslider?
+        resizeSlider.setVisible(false);
+        rotateSlider.setVisible(false);
 
         // Request focus for the panel
         requestFocusInWindow();
     }
 
+    
+
     @Override
     public void onFunctionSelected(ManipulationFunction function) {
         currentElement = null;
         currentFunction = function;
-
-        if(currentFunction instanceof Select){
-            selectFunction = (Select)currentFunction;
-        }
 
         //perform remove immediately on click
         if(currentFunction instanceof Remove){
@@ -244,50 +275,24 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
             currentFunction = null;
         }
 
-        if(currentFunction instanceof Resize && selectFunction != null){
-            // Initialize the slider
-            resizeSlider = (Resize)currentFunction; // Assuming original size is at 1 50
+        if(currentFunction instanceof Resize){      
+            //show resize slider
             setLayout(new BorderLayout());
             add(resizeSlider, BorderLayout.NORTH);
-            
-            //clicked resize second time to confirm
-            if (resizeSlider.isVisible()) {
-                resizeSlider.setVisible(false);
-                selectFunction.clearSelection();
-                return;
-            }
-            //first time clicekd resize to start resize
             resizeSlider.setVisible(true);
-        }
-
-        if(!(currentFunction instanceof Resize) && resizeSlider != null){
+        }else{
+            //hide resize slider
             resizeSlider.setVisible(false);
         }
 
-
-        if(currentFunction instanceof Rotate && selectFunction != null){
-            // Initialize the slider
-            rotateSlider = (Rotate)currentFunction; // Assuming original size is at 1 50
+        if(currentFunction instanceof Rotate){      
+            //show rotate slider
             setLayout(new BorderLayout());
             add(rotateSlider, BorderLayout.NORTH);
-            
-            //clicked resize second time to confirm
-            if (rotateSlider.isVisible()) {
-                rotateSlider.setVisible(false);
-                selectFunction.clearSelection();
-                return;
-            }
-            //first time clicekd resize to start resize
             rotateSlider.setVisible(true);
-        }
-
-        if(!(currentFunction instanceof Rotate) && rotateSlider != null){
+        }else{
+            //hide rotate slider
             rotateSlider.setVisible(false);
-        }
-
-
-        if(currentFunction instanceof Move){
-            moveFunction = (Move)currentFunction;
         }
 
         // Request focus for the panel
@@ -322,7 +327,7 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
 
     public void saveImage() {
         //clear selections before saving
-        if(selectFunction != null){selectFunction.clearSelection();}
+        selectFunction.clearSelection();
 
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Save Image");
@@ -354,5 +359,25 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
                 ex.printStackTrace();
             }
         }
+    }
+
+    public Select getSelect(){
+        return selectFunction;
+    }
+
+    public Move getMove(){
+        return moveFunction;
+    }
+
+    public Remove getRemove(){
+        return removeFunction;
+    }
+
+    public Rotate getRotate(){
+        return rotateSlider;
+    }
+
+    public Resize getResize(){
+        return resizeSlider;
     }
 }

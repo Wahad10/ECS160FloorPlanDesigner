@@ -54,5 +54,7 @@ public class Resize extends JSlider implements ManipulationFunction {
             }
             drawingPanel.repaint();
         }
+
+        drawingPanel.requestFocusInWindow();
     }
 }
