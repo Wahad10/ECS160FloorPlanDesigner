@@ -34,6 +34,7 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
     private DesignElement currentElement;
     private ManipulationFunction currentFunction;
     private Select selectFunction;
+    private Move moveFunction;
     private Resize resizeSlider;
     private Rotate rotateSlider;
 
@@ -51,7 +52,7 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
                 lastPoint = e.getPoint();
             	System.out.print(designElements.size());
                 //select and any other functions too (polymorphism)
-                if (currentFunction != null && SwingUtilities.isLeftMouseButton(e)) {
+                if (currentFunction != null && SwingUtilities.isLeftMouseButton(e) && !(currentFunction instanceof Move)) {
                     currentFunction.performFunction(lastPoint);
                 }
             }
@@ -65,6 +66,9 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
                     selectFunction.startPoint = e.getPoint();
                     selectFunction.endPoint = selectFunction.startPoint;
                     selectFunction.selectedElements.clear();
+                }
+                if(currentFunction instanceof Move){
+                    moveFunction.startDragPoint = e.getPoint();
                 }
 
                 lastPoint = e.getPoint();
@@ -102,6 +106,12 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
                     selectFunction.endPoint = null;
                     repaint();
                 }
+
+                if(currentFunction instanceof Move){
+                    selectFunction.clearSelection();
+                    moveFunction.startDragPoint = null;
+                    repaint();
+                }
                 
                 lastPoint = e.getPoint();
                 if (currentElement instanceof Wall && currentFunction == null) {
@@ -123,6 +133,10 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
                     //selectFunction.draw();
                     selectFunction.selectElements();
                     repaint();
+                }
+
+                if (currentFunction instanceof Move) {
+                    moveFunction.performBetterFunction(e.getPoint());
                 }
                 
                 lastPoint = e.getPoint();
@@ -269,6 +283,11 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
 
         if(!(currentFunction instanceof Rotate) && rotateSlider != null){
             rotateSlider.setVisible(false);
+        }
+
+
+        if(currentFunction instanceof Move){
+            moveFunction = (Move)currentFunction;
         }
 
         // Request focus for the panel

@@ -28,8 +28,12 @@ public class Select implements ManipulationFunction {
         //if (selectedElement != null) {return;}
 
         //Iterate over the design elements and check if any are within the selection area
-        //selectedElement = getSelectedElement(clickedPoint);
-        selectedElements.add(getSelectedElement(clickedPoint)); 
+        DesignElement selectedElement = getSelectedElement(clickedPoint);
+        if(selectedElement != null){
+            selectedElements.add(selectedElement);
+            selectedElement.setSelected(true);
+        }
+        
 
         // Perform selection logic for the element
        // if (selectedElement != null) {
@@ -38,9 +42,9 @@ public class Select implements ManipulationFunction {
             //selectedElement.setSelected(true);
         //}
 
-        for (DesignElement element : selectedElements) {
-            element.setSelected(true);
-        }
+        //for (DesignElement element : selectedElements) {
+        //    element.setSelected(true);
+        //}
 
         // Redraw the canvas to reflect the selection changes
         drawingPanel.repaint();
@@ -63,15 +67,24 @@ public class Select implements ManipulationFunction {
         Rectangle selectionRect = new Rectangle(startPoint);
         selectionRect.add(endPoint);
 
+        List<DesignElement> elementsToRemove = new ArrayList<>();
         for (DesignElement element : elements) {
             if (element.getBounds().intersects(selectionRect)) {
-                selectedElements.add(element);
-                element.setSelected(true);
+                if (!selectedElements.contains(element)) {
+                    selectedElements.add(element);
+                    element.setSelected(true);
+                }
             }
             if (!element.getBounds().intersects(selectionRect)) {
+                //WHY THIS NOT WORK?? selectedElements.remove(element);
+                elementsToRemove.add(element);
+                System.out.println("removed sleection");
                 element.setSelected(false);
             }
         }
+
+        // Remove elements that are not intersecting the selection rectangle
+        selectedElements.removeAll(elementsToRemove);
     }
 
     /**public void clearSelection() {
