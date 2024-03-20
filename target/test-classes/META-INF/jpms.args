@@ -1,4 +1,0 @@
---patch-module
-ECS160FloorPlanDesigner=_
---add-reads
-ECS160FloorPlanDesigner=ALL-UNNAMED
