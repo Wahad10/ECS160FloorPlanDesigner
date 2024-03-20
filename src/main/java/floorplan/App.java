@@ -10,7 +10,7 @@ import functions.BarFunction;
  * Simple Floor Plan Designer using Java Swing.
  * Allows users to draw, save, load, and clear floor plans.
  *
- * @author ChatGPT
+ * @author ChatGPT, Wahad Latif, Kevin Cao
  */
 public class App extends JFrame {
     private DrawingPanel drawingPanel;
@@ -29,9 +29,7 @@ public class App extends JFrame {
     private void initUI() {
         setLayout(new BorderLayout());
 
-        // Create and add the drawing panel to the center
-        //drawingPanel = new DrawingPanel(1600, 900);
-        //drawingPanel = new DrawingPanel(800, 600);
+        // Create and add the drawing panel to the center with resolution 1200x700
         drawingPanel = new DrawingPanel(1200, 700);
         add(drawingPanel, BorderLayout.CENTER);
 
@@ -51,13 +49,14 @@ public class App extends JFrame {
         functionbox.addFunction(drawingPanel.getResize());
         functionbox.addFunction(drawingPanel.getRotate());
 
+        //Create and add the menu bar at the top
         setupMenuBar();
 
         pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        //last thing we do is set the panel to be focused for keyboard shortcuts
+        //last thing we do is set the drawing panel to be focused for keyboard shortcuts
         drawingPanel.requestFocusInWindow();
     }
 
@@ -105,7 +104,7 @@ public class App extends JFrame {
         JMenu helpMenu = new JMenu("Help");
         
         JMenuItem aboutItem = new JMenuItem("About");
-        aboutItem.addActionListener(e -> JOptionPane.showMessageDialog(this, "Simple Paint Application\nVersion 1.0\nCreated by ChatGPT", "About", JOptionPane.INFORMATION_MESSAGE));
+        aboutItem.addActionListener(e -> JOptionPane.showMessageDialog(this, "Simple Floorplan Application\nVersion 1.0\nCreated by ChatGPT, Wahad, Kevin", "About", JOptionPane.INFORMATION_MESSAGE));
         helpMenu.add(aboutItem);
         
         return helpMenu;

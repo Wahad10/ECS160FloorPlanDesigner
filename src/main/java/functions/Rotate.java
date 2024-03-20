@@ -6,6 +6,11 @@ import javax.swing.*;
 import elements.DesignElement;
 import floorplan.*;
 
+/**
+ * Class representing a rotate function
+ *
+ * @author ChatGPT, Wahad Latif
+ */
 public class Rotate extends JSlider implements ManipulationFunction {
     private DrawingPanel drawingPanel;
     private Select selectFunction;
@@ -19,6 +24,7 @@ public class Rotate extends JSlider implements ManipulationFunction {
         setPaintTicks(true);
         setPaintLabels(true);
 
+        //Hide slider initially
         setVisible(false);
 
         // Add a listener to handle resizing
@@ -28,14 +34,16 @@ public class Rotate extends JSlider implements ManipulationFunction {
     @Override
     public void performFunction(Point point) {
         int rotateFactor = getValue(); // Rotate factor from 0 to 360
+
         // Rotate the selected design element
         if (selectFunction.selectedElements != null) {
             for (DesignElement element : selectFunction.selectedElements) {
                 element.rotate(rotateFactor);
-            }
-            drawingPanel.repaint();
+            } 
         }
 
+        //Update drawing panel and make sure it still recieves keyboard input (not this slider)
+        drawingPanel.repaint();
         drawingPanel.requestFocusInWindow();
     }
 }

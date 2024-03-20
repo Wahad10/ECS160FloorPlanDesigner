@@ -3,6 +3,11 @@ package elements;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
+/**
+ * Class representing a table design element.
+ *
+ * @author Kevin Cao
+ */
 public class Table implements DesignElement {
     private static final int DEFAULT_TABLE_WIDTH = 100;
     private static final int DEFAULT_TABLE_HEIGHT = 60;

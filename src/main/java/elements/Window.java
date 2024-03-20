@@ -6,7 +6,7 @@ import java.awt.geom.AffineTransform;
 /**
  * Class representing a window design element.
  *
- * @author ChatGPT
+ * @author ChatGPT, Wahad Latif
  */
 public class Window implements DesignElement {
     private static final int DEFAULT_WINDOW_WIDTH = 40;

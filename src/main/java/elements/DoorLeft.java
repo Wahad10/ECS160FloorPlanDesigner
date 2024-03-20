@@ -3,18 +3,19 @@ package elements;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
+/**
+ * Class representing a door design element.
+ *
+ * @author Wahad Latif
+ */
 public class DoorLeft implements DesignElement {
-    private static final int DEFAULT_DOOR_WIDTH = 80; // Diameter of the door
-    private static final int DEFAULT_DOOR_HEIGHT = 80; // Diameter of the door
+    private static final int DEFAULT_DOOR_WIDTH = 80;
+    private static final int DEFAULT_DOOR_HEIGHT = 80;
     private int doorWidth = DEFAULT_DOOR_WIDTH;
     private int doorHeight = DEFAULT_DOOR_HEIGHT;
     private Point startPoint;
     private boolean isSelected = false;
     private int rotationAngle = 0;
-
-    /**public Door(Color color, int thickness) {
-        super(color, thickness);
-    }**/
 
     public Point getStartPoint() {
         return startPoint;

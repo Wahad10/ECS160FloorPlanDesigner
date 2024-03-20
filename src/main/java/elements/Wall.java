@@ -6,7 +6,7 @@ import java.awt.geom.AffineTransform;
 /**
  * Class representing a wall design element.
  *
- * @author ChatGPT
+ * @author ChatGPT, Wahad Latif
  */
 public class Wall implements DesignElement{
     private int DEFUALT_WALL_THICKNESS = 3;

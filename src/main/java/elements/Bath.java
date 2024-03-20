@@ -3,6 +3,11 @@ package elements;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
+/**
+ * Class representing a bath design element.
+ *
+ * @author Kevin Cao
+ */
 public class Bath implements DesignElement {
     private static final int DEFAULT_BATH_WIDTH = 40;
     private static final int DEFAULT_BATH_HEIGHT = 80;

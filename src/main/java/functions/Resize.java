@@ -9,6 +9,11 @@ import java.util.Hashtable;
 
 import floorplan.*;
 
+/**
+ * Class representing a resize function
+ *
+ * @author ChatGPT, Wahad Latif
+ */
 public class Resize extends JSlider implements ManipulationFunction {
     private DrawingPanel drawingPanel;
     private Select selectFunction;
@@ -22,7 +27,7 @@ public class Resize extends JSlider implements ManipulationFunction {
         setPaintTicks(true);
         setPaintLabels(true);
 
-        // Customize the labels to show 1 instead of 100 and 10 instead of 1000
+        // Customize the labels to show 1-10 instead of 10-1000
         Hashtable<Integer, JLabel> labelTable = new Hashtable<>();
         labelTable.put(0, new JLabel("0"));
         labelTable.put(100, new JLabel("1"));
@@ -37,6 +42,7 @@ public class Resize extends JSlider implements ManipulationFunction {
         labelTable.put(1000, new JLabel("10"));
         setLabelTable(labelTable);
 
+        //Hide slider  initially
         setVisible(false);
 
         // Add a listener to handle resizing
@@ -46,14 +52,16 @@ public class Resize extends JSlider implements ManipulationFunction {
     @Override
     public void performFunction(Point point) {
         double scaleFactor = (double) getValue() / 100; // Scale factor from 0.0 to 10.0
-        // Resize the selected design element
+
+        // Resize the selected design elements
         if (selectFunction.selectedElements != null) {
             for (DesignElement element : selectFunction.selectedElements) {
                 element.resize(scaleFactor);
             }
-            drawingPanel.repaint();
         }
 
+        //Update drawing panel and make sure it still recieves keyboard input (not this slider)
+        drawingPanel.repaint();
         drawingPanel.requestFocusInWindow();
     }
 }

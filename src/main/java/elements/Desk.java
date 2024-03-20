@@ -3,6 +3,11 @@ package elements;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
+/**
+ * Class representing a desk design element.
+ *
+ * @author Kevin Cao
+ */
 public class Desk implements DesignElement {
     private static final int DEFAULT_DESK_WIDTH = 60;
     private static final int DEFAULT_DESK_HEIGHT = 40;

@@ -3,6 +3,12 @@ package elements;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
+
+/**
+ * Class representing a lamp design element.
+ *
+ * @author Kevin Cao
+ */
 public class Lamp implements DesignElement {
     private static final int DEFAULT_BASE_WIDTH = 10;
     private static final int DEFAULT_BASE_HEIGHT = 20;

@@ -21,6 +21,7 @@ public class BarFunction extends JPanel {
     }
 
     public void addFunction(ManipulationFunction function) {
+        //Custom Button Names with Keyboard Shortcut Hints
         String buttonName;
         switch (function.getClass().getSimpleName()) {
             case "Select":
@@ -43,7 +44,10 @@ public class BarFunction extends JPanel {
                 break;
         }
         JButton button = new JButton(buttonName);
+
+        //Whenever button is clicked, observers (drawingPanel) know what function was picked
         button.addActionListener(e -> notifyObservers(function));
+        
         add(button);
     }
 

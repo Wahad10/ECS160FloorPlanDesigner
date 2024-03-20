@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 
 /**
- * Class representing a chair design element.
+ * Class representing a fridge design element.
  *
  * @author Wahad Latif
  */

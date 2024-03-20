@@ -3,6 +3,11 @@ package elements;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
+/**
+ * Class representing a toilet design element.
+ *
+ * @author Kevin Cao
+ */
 public class Toilet implements DesignElement {
     private static final int DEFAULT_TOILET_RADIUS_X = 20;
     private static final int DEFAULT_TOILET_RADIUS_Y = 15;

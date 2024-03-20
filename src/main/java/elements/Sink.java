@@ -3,6 +3,12 @@ package elements;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
+
+/**
+ * Class representing a door design element.
+ *
+ * @author Kevin Cao
+ */
 public class Sink implements DesignElement {
     private static final int DEFAULT_SINK_WIDTH = 45;
     private static final int DEFAULT_SINK_HEIGHT = 25;

@@ -7,6 +7,11 @@ import java.awt.*;
 import elements.*;
 import floorplan.*;
 
+/**
+ * Class representing a select function
+ *
+ * @author ChatGPT, Wahad Latif
+ */
 public class Select implements ManipulationFunction {
     private DrawingPanel drawingPanel;
     public List<DesignElement> selectedElements;
@@ -22,10 +27,12 @@ public class Select implements ManipulationFunction {
     public void performFunction(Point draggedPoint) {
         List<DesignElement> elements = drawingPanel.getDesignElements();
 
+        //The current selection rectangle
         Rectangle selectionRect = new Rectangle(startPoint);
         endPoint = draggedPoint;
         selectionRect.add(endPoint);
 
+        //Check if the design elements intersect with the selction rectangle and select them if so
         for (DesignElement element : elements) {
             if (element.getBounds().intersects(selectionRect)) {
                 if (!selectedElements.contains(element)) {
@@ -36,9 +43,10 @@ public class Select implements ManipulationFunction {
         }
     }
 
+    //Draw a transparent blue rectangle as user drags mouse to show the selection area
     public void draw(Graphics2D g) {
         if (startPoint != null && endPoint != null) {
-            g.setColor(new Color(0, 0, 255, 100)); // Transparent blue
+            g.setColor(new Color(0, 0, 255, 100)); 
             int x = Math.min(startPoint.x, endPoint.x);
             int y = Math.min(startPoint.y, endPoint.y);
             int width = Math.abs(startPoint.x - endPoint.x);
@@ -47,6 +55,7 @@ public class Select implements ManipulationFunction {
         }
     }
 
+    //Clear all selected items
     public void clearSelection() {
         for (DesignElement element : selectedElements) {
             element.setSelected(false);

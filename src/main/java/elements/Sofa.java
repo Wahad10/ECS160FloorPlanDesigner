@@ -3,6 +3,11 @@ package elements;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
+/**
+ * Class representing a sofa design element.
+ *
+ * @author Kevin Cao
+ */
 public class Sofa implements DesignElement {
     private static final int DEFAULT_SOFA_WIDTH = 60;
     private static final int DEFAULT_SOFA_HEIGHT = 30;

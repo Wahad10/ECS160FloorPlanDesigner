@@ -3,6 +3,11 @@ package elements;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
+/**
+ * Class representing a chair design element.
+ *
+ * @author Kevin Cao
+ */
 public class Chair implements DesignElement {
     private static final int DEFAULT_CHAIR_WIDTH = 30;
     private static final int DEFAULT_CHAIR_HEIGHT = 30;

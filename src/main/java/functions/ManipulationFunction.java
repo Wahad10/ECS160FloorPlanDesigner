@@ -8,5 +8,6 @@ import java.awt.*;
  * @author Wahad Latif
  */
 public interface ManipulationFunction {
+    //Startegy Pattern
     public void performFunction(Point clickedPoint);
 }

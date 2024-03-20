@@ -3,6 +3,11 @@ package elements;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
+/**
+ * Class representing a stove design element.
+ *
+ * @author Kevin Cao
+ */
 public class Stove implements DesignElement {
     private static final int DEFAULT_STOVE_WIDTH = 60;
     private static final int DEFAULT_STOVE_HEIGHT = 40;

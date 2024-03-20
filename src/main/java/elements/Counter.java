@@ -3,6 +3,11 @@ package elements;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
+/**
+ * Class representing a counter design element.
+ *
+ * @author Kevin Cao
+ */
 public class Counter implements DesignElement {
     private static final int DEFAULT_COUNTER_WIDTH = 80;
     private static final int DEFAULT_COUNTER_HEIGHT = 50;

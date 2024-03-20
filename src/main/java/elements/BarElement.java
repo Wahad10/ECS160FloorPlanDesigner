@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
- * Class for sidebar
+ * Class for design elements sidebar
  * @author Wahad Latif and ChatGPT
  *
  */
@@ -39,6 +39,7 @@ public class BarElement extends JPanel {
     }
 
     private void addElement(DesignElement element) {
+        //Custom Button Names
         String buttonName = element.getClass().getSimpleName();
         if(buttonName.equals("DoorRight")){
             buttonName = "<html>Door<br />Right</html>";
@@ -49,14 +50,14 @@ public class BarElement extends JPanel {
         JButton button = new JButton(buttonName);
 
         // Set a preferred size for the button
-        button.setPreferredSize(new Dimension(60, 40)); // Adjust the dimensions as needed
+        button.setPreferredSize(new Dimension(60, 40));
 
         // Set a margin to provide padding around the text
-        button.setMargin(new Insets(3, 3, 3, 3)); // Adjust the insets as needed
+        button.setMargin(new Insets(3, 3, 3, 3));
 
-        button.addActionListener(e -> {
-            notifyObservers(element);
-        });
+        //Whenever button is clicked, observers (drawingPanel) know what design element was picked
+        button.addActionListener(e -> notifyObservers(element));
+
         add(button);
     }
 
