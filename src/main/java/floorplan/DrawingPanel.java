@@ -64,15 +64,6 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
 
                 lastPoint = e.getPoint();
                 
-                //Functions
-                if(currentFunction instanceof Select){
-                    selectFunction.startPoint = lastPoint;
-                    selectFunction.endPoint = selectFunction.startPoint;
-                }
-                if(currentFunction instanceof Move){
-                    moveFunction.startDragPoint = lastPoint;
-                }
-
                 //Elements
                 //Wall will only be drawn once mouse is released later
                 if (currentElement instanceof Wall) {
@@ -92,9 +83,16 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
                     } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException ex) {
                         ex.printStackTrace();
                     }
-                    
-
                 	repaint();
+                }
+
+                //Functions
+                if(currentFunction instanceof Select){
+                    selectFunction.startPoint = lastPoint;
+                    selectFunction.endPoint = selectFunction.startPoint;
+                }
+                if(currentFunction instanceof Move){
+                    moveFunction.startDragPoint = lastPoint;
                 }
             }
 
@@ -104,7 +102,13 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
                 if (e.getButton() != MouseEvent.BUTTON1) {return;}
 
                 lastPoint = e.getPoint();
-                
+
+                //Elements
+                if (currentElement instanceof Wall) {
+                    ((Wall)currentElement).setEndPoint(lastPoint);
+                    repaint();
+                } 
+
                 //Functions
                 if(currentFunction instanceof Select){
                     selectFunction.startPoint = null;
@@ -115,14 +119,7 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
                     moveFunction.startDragPoint = null;
                     repaint();
                 }
-
-                //Elements
-                if (currentElement instanceof Wall && currentFunction == null) {
-                    ((Wall)currentElement).setEndPoint(lastPoint);
-                    repaint();
-                }
             }
-
         });
 
         addMouseMotionListener(new MouseAdapter() {
@@ -133,15 +130,15 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
 
                 lastPoint = e.getPoint();
 
-                //Functions
-                if(currentFunction instanceof Select || currentFunction instanceof Move){
-                    currentFunction.performFunction(lastPoint);
+                //Elements
+                if (currentElement instanceof Wall) {
+                    ((Wall)currentElement).setEndPoint(lastPoint);
                     repaint();
                 }
 
-                //Elements
-                if (currentElement instanceof Wall && currentFunction == null) {
-                    ((Wall)currentElement).setEndPoint(lastPoint);
+                //Functions
+                if(currentFunction instanceof Select || currentFunction instanceof Move){
+                    currentFunction.performFunction(lastPoint);
                     repaint();
                 }
             }
@@ -151,6 +148,7 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
                 // Update the last point to the current mouse position
                 lastPoint = e.getPoint();
 
+                //show preview of current element
                 if(currentElement != null && !(currentElement instanceof Wall)){
                     currentElement.setStartPoint(lastPoint);
                 }
@@ -167,11 +165,16 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    currentElement = null;
+                    repaint();
+                }
+
+                if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     System.out.println("Escape key pressed");
                     selectFunction.clearSelection();
-                    //repaint();
                     resizeSlider.setVisible(false);
                     rotateSlider.setVisible(false);
+                    repaint();
                 }
 
                 if (e.getKeyCode() == KeyEvent.VK_S) {
@@ -263,14 +266,9 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
         g2d.dispose();
     }
 
-    public List<DesignElement> getDesignElements(){
-        return designElements;
-    }
-
     @Override
     public void onElementSelected(DesignElement element) {
-        //currentElement = element;
-        //currentElement.setStartPoint(lastPoint);
+        //create a copy of the element so we can draw it on our canvas
         try {
             currentElement = element.getClass().getDeclaredConstructor().newInstance();
             currentElement.setStartPoint(lastPoint);
@@ -279,8 +277,8 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
         }
         currentFunction = null;
 
+        //clear selection and hide sliders
         selectFunction.clearSelection();
-        //should i hide resizeslider?
         resizeSlider.setVisible(false);
         rotateSlider.setVisible(false);
 
@@ -290,6 +288,9 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
 
     @Override
     public void onFunctionSelected(ManipulationFunction function) {
+        //hide current element preview
+        repaint();
+
         currentElement = null;
         currentFunction = function;
 
@@ -299,23 +300,21 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
             currentFunction = null;
         }
 
+        //show resize slider if appropriate
         if(currentFunction instanceof Resize){      
-            //show resize slider
             setLayout(new BorderLayout());
             add(resizeSlider, BorderLayout.NORTH);
             resizeSlider.setVisible(true);
         }else{
-            //hide resize slider
             resizeSlider.setVisible(false);
         }
 
+        //show rotate slider if appropriate
         if(currentFunction instanceof Rotate){      
-            //show rotate slider
             setLayout(new BorderLayout());
             add(rotateSlider, BorderLayout.NORTH);
             rotateSlider.setVisible(true);
         }else{
-            //hide rotate slider
             rotateSlider.setVisible(false);
         }
 
@@ -383,6 +382,10 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
                 ex.printStackTrace();
             }
         }
+    }
+
+    public List<DesignElement> getDesignElements(){
+        return designElements;
     }
 
     public Select getSelect(){
