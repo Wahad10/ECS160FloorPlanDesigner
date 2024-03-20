@@ -83,13 +83,16 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
                 //if currentElement anything other than wall, just draw it where mouse is clicked
                 }else if (currentElement != null) {
                     try {
+                        //add the preview current element to design elements to finalize its position
+                        currentElement.setStartPoint(lastPoint);
+                        designElements.add(currentElement);
                         // Create a new instance of the current design element using reflection
                         currentElement = currentElement.getClass().getDeclaredConstructor().newInstance();
+                        currentElement.setStartPoint(lastPoint);
                     } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException ex) {
                         ex.printStackTrace();
                     }
-                    currentElement.setStartPoint(lastPoint);
-                    designElements.add(currentElement);
+                    
 
                 	repaint();
                 }
@@ -141,6 +144,19 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
                     ((Wall)currentElement).setEndPoint(lastPoint);
                     repaint();
                 }
+            }
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                // Update the last point to the current mouse position
+                lastPoint = e.getPoint();
+
+                if(currentElement != null && !(currentElement instanceof Wall)){
+                    currentElement.setStartPoint(lastPoint);
+                }
+
+                // Repaint the panel to update the position of the current element
+                repaint();
             }
         });
 
@@ -239,6 +255,11 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
             selectFunction.draw(g2d);
         }
 
+        //also draw preview of current element if needed
+        if(currentElement != null){
+            currentElement.draw(g2d);
+        }
+
         g2d.dispose();
     }
 
@@ -248,7 +269,14 @@ public class DrawingPanel extends JPanel implements ElementSelectedObserver, Fun
 
     @Override
     public void onElementSelected(DesignElement element) {
-        currentElement = element;
+        //currentElement = element;
+        //currentElement.setStartPoint(lastPoint);
+        try {
+            currentElement = element.getClass().getDeclaredConstructor().newInstance();
+            currentElement.setStartPoint(lastPoint);
+        } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException ex) {
+            ex.printStackTrace();
+        }
         currentFunction = null;
 
         selectFunction.clearSelection();
